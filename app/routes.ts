@@ -6,11 +6,12 @@ import {
 
 export default [
   index("routes/home.tsx"),
-  route("about", "routes/about.tsx"),
-
+  
   // 動的サンプル
   route("users/:id", "routes/users/detail.tsx"),
-
-  // three sample
+  
+  // sample
+  route("about", "routes/about.tsx"),
   route("three", "routes/three.tsx"),
+  route("audio", "routes/audio.tsx"),
 ] satisfies RouteConfig;

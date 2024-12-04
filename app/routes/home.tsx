@@ -15,6 +15,7 @@ export default function Home() {
       <ul>
         <li><NavLink to="/about">About</NavLink></li>
         <li><NavLink to="/three">Three</NavLink></li>
+        <li><NavLink to="/audio">Audio</NavLink></li>
       </ul>
     </div>
   );
