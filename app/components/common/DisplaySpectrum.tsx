@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useStore } from "../stores/UseStore";
+import { useStore } from "../../stores/UseStore";
 
 const FULL_HUE_DEGREES = 270;
 const CANVAS_HEIGHT = 100;

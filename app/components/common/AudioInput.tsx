@@ -1,6 +1,6 @@
 import { useControls, button } from "leva";
 import { useRef, useEffect, useState } from "react";
-import { useStore } from "../stores/UseStore";
+import { useStore } from "../../stores/UseStore";
 import DisplaySpectrum from "./DisplaySpectrum";
 
 const FFT_SIZE = 64; // min 32

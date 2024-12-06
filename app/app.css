@@ -4,10 +4,7 @@
 
 html,
 body {
-  @apply bg-white dark:bg-slate-300 w-full h-full;
+  @apply bg-slate-200 w-full h-full text-slate-800;
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
 }
 
