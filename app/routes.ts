@@ -10,7 +10,11 @@ export default [
 
   // /visual/ 以下のルーティング
   route("visual", "./routes/visual/index.tsx", [
-    route("sample", "./routes/visual/sample.tsx"),
-    route("three", "./routes/visual/three.tsx"),
+    route("sampleAudio", "./routes/visual/sampleAudio.tsx"),
+    route("sampleSimpleThree", "./routes/visual/sampleSimpleThree.tsx"),
+    route("shaderWater", "./routes/visual/shaderWater.tsx"),
+    route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
+    // route("sampleCustomShader", "./routes/visual/sampleCustomShader.tsx"),
+    // route("wobble", "./routes/visual/wobble.tsx"),
   ]),
 ] satisfies RouteConfig;
