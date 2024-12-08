@@ -3,13 +3,13 @@ import { useRef, useEffect, useState } from "react";
 import { useStore } from "../../stores/UseStore";
 import DisplaySpectrum from "./DisplaySpectrum";
 
-const FFT_SIZE = 64; // min 32
+// const FFT_SIZE = 64; // min 32
 
-export default function AudioInput() {
+export default function AudioInput({ FFT_SIZE = 64 }: { FFT_SIZE?: number }) {
   // UI Controls
-  const { audioAmplification, displaySpectrum } = useControls({
+  const { audioAmplification, displaySpectrum } = useControls('Audio Input', {
     'Mic On': button(() => {
-      createStreamSource();
+      createStreamSource(FFT_SIZE);
     }),
     audioAmplification: { 
       value: 1, 
@@ -31,7 +31,7 @@ export default function AudioInput() {
   const [analyserNode, setAnalyserNode] = useState<AnalyserNode | null>(null);
 
   // Create Stream Source
-  const createStreamSource = async () => {
+  const createStreamSource = async (FFT_SIZE: number) => {
     try {
       const streamSource = await navigator.mediaDevices.getUserMedia({ audio: true });
       audioContext.current = new AudioContext();
@@ -78,9 +78,8 @@ export default function AudioInput() {
   }, [analyserNode, audioAmplification]);
 
   return (
-    <div>
-      <div>AudioInput</div>
+    <>
       {displaySpectrum && <DisplaySpectrum />}
-    </div>
+    </>
   );
 }

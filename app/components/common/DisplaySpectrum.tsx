@@ -75,7 +75,7 @@ export default function DisplaySpectrum() {
   }, [audioArrayData]);
 
   return (
-    <div className="w-full fixed bottom-0 left-0 h-[100px]">
+    <div className="w-full fixed bottom-0 left-0 h-[100px] z-10">
       <canvas ref={refSpectrum} className="w-full h-full"></canvas>
     </div>
   );
