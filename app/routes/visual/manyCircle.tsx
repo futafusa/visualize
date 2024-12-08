@@ -9,7 +9,7 @@ import { useControls } from "leva";
 import { useStore } from "../../stores/UseStore";
 
 // circle count
-const circleCount = 64;
+const circleCount = 128;
 
 function Circle() {
   // Global State
@@ -48,10 +48,10 @@ function Circle() {
       <group ref={refGroup}>
         {Array.from({ length: circleCount }).map((_, index) => (
           <mesh position={positions?.[index]} key={index}>
-            <torusGeometry args={[1, 0.005, 16, 128]} />
+            <torusGeometry args={[1, 0.01, 16, 128]} />
             <meshStandardMaterial
-              color={`hsl(${index * 2.5}, 100%, 75%)`}
-              emissive={`hsl(${index * 2.5}, 100%, 80%)`}
+              color={`hsl(${index * 4}, 100%, 75%)`}
+              emissive={`hsl(${index * 4}, 100%, 80%)`}
               emissiveIntensity={1}
             />
           </mesh>
