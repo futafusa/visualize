@@ -15,6 +15,7 @@ export default [
     route("shaderWater", "./routes/visual/shaderWater.tsx"),
     route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
     route("manyCircle", "./routes/visual/manyCircle.tsx"),
+    route("ballAttract", "./routes/visual/ballAttract.tsx"),
     // route("sampleCustomShader", "./routes/visual/sampleCustomShader.tsx"),
     // route("wobble", "./routes/visual/wobble.tsx"),
   ]),
