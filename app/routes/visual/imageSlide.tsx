@@ -2,16 +2,17 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { CameraControls, ScrollControls, useTexture, useScroll } from "@react-three/drei";
 import { useControls } from "leva";
-import VertexShader from "../../shaders/patternStudy/vertex.glsl";
-import FragmentShader from "../../shaders/patternStudy/fragment.glsl";
+import slideImageVertexShader from "../../shaders/slideImage/vertex.glsl";
+import slideImageFragmentShader from "../../shaders/slideImage/fragment.glsl";
 import { Perf } from "r3f-perf";
-
-function ShaderPattern() {
+import AudioInput from "../../components/common/AudioInput";
+import { useStore } from "../../stores/UseStore";
+function ShaderSlideImage() {
   const { testParam } = useControls('Test', {
     testParam: {
       value: 0.0,
-      min: 0.0,
-      max: 1.0,
+      min: -0.2,
+      max: 1.2,
       step: 0.01,
     }
   })
@@ -19,7 +20,10 @@ function ShaderPattern() {
   const texture1 = useTexture('/images/sample1.png');
   const texture2 = useTexture('/images/sample2.png');
   // console.log(texture);
-  
+
+  // Global State
+  const audioArrayData = useStore((state) => state.audioArrayData);
+
   const pattern01 = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0.0 },
@@ -29,13 +33,13 @@ function ShaderPattern() {
       uImageAspect: { value: texture1.image.width / texture1.image.height },
       uPlaneAspect: { value: 1.6 / 0.9 },
     },
-    vertexShader: VertexShader,
-    fragmentShader: FragmentShader
+    vertexShader: slideImageVertexShader,
+    fragmentShader: slideImageFragmentShader
   });
 
 
   useFrame((_, delta) => {
-    // pattern01.uniforms.testParam.value = scroll.offset;
+    pattern01.uniforms.testParam.value = audioArrayData ? audioArrayData[0] / 255 : testParam;
   })  
 
   return (
@@ -45,13 +49,14 @@ function ShaderPattern() {
   )
 }
 
-export default function SampleShaderPattern() {
-  // const { perfVisible }= useControls('Performance',{
-  //   perfVisible: false,
-  // })
+export default function ImageSlide() {
+  const { perfVisible }= useControls('Performance',{
+    perfVisible: false,
+  })
 
   return (
     <>
+      <AudioInput />
      <Canvas
         shadows
         camera={{
@@ -68,9 +73,9 @@ export default function SampleShaderPattern() {
           toneMappingExposure: 1.0,
         }}
       >
-        {/* {perfVisible && <Perf position="bottom-right" />} */}
+        {perfVisible && <Perf position="bottom-right" />}
         {/* <CameraControls makeDefault /> */}
-        <ShaderPattern />
+        <ShaderSlideImage />
       </Canvas>
     </>
   );

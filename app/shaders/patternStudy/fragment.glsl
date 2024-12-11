@@ -1,6 +1,10 @@
 varying vec2 vUv;
 uniform float uTime;
 uniform float testParam;
+uniform sampler2D uTexture1;
+uniform sampler2D uTexture2;
+uniform float uImageAspect;
+uniform float uPlaneAspect;
 #define PI 3.1415926535897932384626433832795
 
 #include "../_includes/cnoise2d.glsl"
@@ -13,7 +17,7 @@ void main() {
   // グラデーション
   // float strength = vUv.x * 10.0;
 
-  // float strength = step(testParam, vUv.x);
+  float strength = step(testParam, vUv.x);
 
   // 縞模様
   // float strength = mod(vUv.x * 10.0, 1.0);
@@ -79,35 +83,15 @@ void main() {
   // float strength = 1.0 - step(0.01, abs(distance(vUv, vec2(0.5)) - radius));
 
   // ノイズ関数を使ったサンプル
-  // float strength = cnoise(vUv * 20.0);
+  // float strength = cnoise(vUv * 30.0);
   // float strength = step(testParam, cnoise(vUv * 10.0));
   // float strength = 1.0 - abs(cnoise(vUv * 10.0));
   // float strength = step(testParam, sin(cnoise(vUv * 10.0) * 20.0 ));
-  // vec3 color = vec3(strength);
 
   // vec3 backColor = vec3(0.0);
   // vec3 frontColor = vec3(vUv, 1.0);
   // vec3 color = mix(backColor, frontColor, strength);
 
-  // オリジナル
-  // float noize1 = step(0.5, sin(cnoise(vUv * 10.0) * 20.0 ));
-
-  // float noize = step(testParam, sin(cnoise(vUv * 10.0) * 20.0 ));
-
-  // float dist = distance(vec2(vUv.x, (vUv.y - 0.5) * 5.0 + 0.5), vec2(0.5, 2.0 * testParam));
-  // float fade = 1.0 - smoothstep(0.0, 0.8, dist);
-  float noise = cnoise(vec2(vUv.x * 20.0, vUv.y * 20.0)) * 0.3;
-  // 中心で1.0、端で0.0
-  float distanceFromCenter = 1.0 - abs(vUv.x - 0.5) * 2.0;
-  noise *= distanceFromCenter;
-
-  float gradient = step(testParam, vUv.y +noise);
-  // float gradient = step(testParam + noise * smoothstep(0.0, 0.8, testParam) * smoothstep(1.0, 0.2, testParam), vUv.y);
-  // vec3 strength = vec3(gradient);
-
-  // vec3 backColor = vec3(0.0);
-  // vec3 frontColor = vec3(vUv, 1.0);
-  // vec3 color = mix(backColor, frontColor, strength);
-
-  gl_FragColor = vec4(vec3(gradient), 1.0);
+  vec3 color = vec3(strength);
+  gl_FragColor = vec4(color, 1.0);
 }
