@@ -7,6 +7,7 @@ import slideImageFragmentShader from "../../shaders/slideImage/fragment.glsl";
 import { Perf } from "r3f-perf";
 import AudioInput from "../../components/common/AudioInput";
 import { useStore } from "../../stores/UseStore";
+
 function ShaderSlideImage() {
   const { testParam } = useControls('Test', {
     testParam: {
@@ -39,8 +40,8 @@ function ShaderSlideImage() {
 
 
   useFrame((_, delta) => {
-    pattern01.uniforms.testParam.value = audioArrayData ? audioArrayData[0] / 255 : testParam;
-  })  
+    pattern01.uniforms.testParam.value = audioArrayData ? audioArrayData[2] / 255 : testParam;
+  })
 
   return (
     <mesh position={[0, 0.01, 0]} rotation-x={-Math.PI * 0.5} material={pattern01}>
@@ -57,7 +58,7 @@ export default function ImageSlide() {
   return (
     <>
       <AudioInput />
-     <Canvas
+      <Canvas
         shadows
         camera={{
           fov: 45,
@@ -74,7 +75,7 @@ export default function ImageSlide() {
         }}
       >
         {perfVisible && <Perf position="bottom-right" />}
-        {/* <CameraControls makeDefault /> */}
+        <CameraControls makeDefault />
         <ShaderSlideImage />
       </Canvas>
     </>
