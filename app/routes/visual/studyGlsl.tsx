@@ -9,6 +9,8 @@ import VertexShader2 from "../../shaders/studyGLSL/type2/vertex.glsl";
 import FragmentShader2 from "../../shaders/studyGLSL/type2/fragment.glsl";
 import VertexShader3 from "../../shaders/studyGLSL/type3/vertex.glsl";
 import FragmentShader3 from "../../shaders/studyGLSL/type3/fragment.glsl";
+import VertexShader4 from "../../shaders/studyGLSL/type4/vertex.glsl";
+import FragmentShader4 from "../../shaders/studyGLSL/type4/fragment.glsl";
 import { Perf } from "r3f-perf";
 
 function ShaderPattern() {
@@ -24,6 +26,10 @@ function ShaderPattern() {
     studyGLSL3: {
       vertex: VertexShader3,
       fragment: FragmentShader3
+    },
+    studyGLSL4: {
+      vertex: VertexShader4,
+      fragment: FragmentShader4
     }
   }
 
@@ -32,6 +38,10 @@ function ShaderPattern() {
       options: Object.keys(SHADER_MAPPING),
     },
   })
+  const { uColorDepth, uColorSurface } = useControls('Color', {
+    uColorDepth: '#000000',
+    uColorSurface: '#00fff5',
+  })
 
   const customShaderMaterial = useMemo(() => {
     const shaders = SHADER_MAPPING[selectShader as keyof typeof SHADER_MAPPING];
@@ -39,11 +49,13 @@ function ShaderPattern() {
     return new THREE.ShaderMaterial({
       uniforms: {
         uTime: { value: 0.0 },
+        uColorDepth: { value: new THREE.Color(uColorDepth) },
+        uColorSurface: { value: new THREE.Color(uColorSurface) },
       },
       vertexShader: shaders.vertex,
       fragmentShader: shaders.fragment,
     })
-  }, [selectShader])
+  }, [selectShader, uColorDepth, uColorSurface])
 
   useFrame((_, delta) => {
     customShaderMaterial.uniforms.uTime.value += delta;
