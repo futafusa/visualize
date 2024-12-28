@@ -21,5 +21,6 @@ export default [
     route("sampleBufferGeometry", "./routes/visual/sampleBufferGeometry.tsx"),
     route("sampleShaderNoise", "./routes/visual/sampleShaderNoise.tsx"),
     route("studyGlsl", "./routes/visual/studyGlsl.tsx"),
+    route("customShaderMaterial", "./routes/visual/sampleCustomShader.tsx"),
   ]),
 ] satisfies RouteConfig;
