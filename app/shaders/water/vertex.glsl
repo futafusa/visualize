@@ -8,7 +8,7 @@ uniform float uSmallWavesFrequency;
 uniform float uSmallWavesSpeed;
 uniform float uSmallIterations;
 
-#include '../_includes/cnoise.glsl'
+#include '../_includes/cnoise3d.glsl'
 
 void main() {
   vec4 modelPosition = modelMatrix * vec4(position, 1.0);
@@ -17,7 +17,7 @@ void main() {
                     uBigWavesElevation;
   
   for(float i = 1.0; i < uSmallIterations; i++) {
-    elevation -= abs(cnoise(vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i);
+    elevation -= abs(cnoise3d(vec3(modelPosition.xz * uSmallWavesFrequency * i, uTime * uSmallWavesSpeed)) * uSmallWavesElevation / i);
   }
 
   modelPosition.y += elevation;
