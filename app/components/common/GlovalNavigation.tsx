@@ -3,7 +3,23 @@ import { Link } from "react-router";
 export default function GlovalNavigation() {
   return (
     <nav className="fixed top-8 left-8 z-10">
-      <Link to="/" className="bg-white px-6 py-2 rounded-md drop-shadow-md text-sm font-bold hover:bg-black hover:text-white transition-colors duration-100">
+      <Link to="/"
+        className="
+          bg-white
+          pr-6 pl-4 py-2
+          rounded-md
+          drop-shadow-md
+          text-sm
+          transition-colors
+          duration-100
+          flex
+          items-center
+          gap-1
+          hover:bg-black
+          hover:text-white
+        "
+      >
+        <span className="i-ic-round-arrow-back-ios" />
         back
       </Link>
       {/* <ul className="flex space-x-2">

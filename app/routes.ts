@@ -7,6 +7,7 @@ import {
 
 export default [
   index("./routes/home.tsx"),
+  // route("about", "./routes/about.tsx"),
 
   // /visual/ 以下のルーティング
   route("visual", "./routes/visual/index.tsx", [
