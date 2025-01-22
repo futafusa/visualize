@@ -21,9 +21,10 @@ export default function Player() {
       const ray = new rapier.Ray(origin, direction);
 
       const hit = world.castRay(ray, 10, true);
+      // console.log(hit);
 
       if(hit && hit.timeOfImpact < 0.15) {
-        refPlayer.current?.applyImpulse({x: 0, y: 5, z: 0}, true);
+        refPlayer.current?.applyImpulse({x: 0, y: 3, z: 0}, true);
       }
     }
   }
@@ -93,7 +94,7 @@ export default function Player() {
     <RigidBody
       ref={refPlayer}
       colliders="ball"
-      restitution={0.5}
+      restitution={0.1}
       friction={1}
       canSleep={false}
       linearDamping={0.5}

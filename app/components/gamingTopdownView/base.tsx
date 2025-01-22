@@ -6,8 +6,10 @@ import { Perf } from "r3f-perf";
 import { Physics } from "@react-three/rapier";
 import Player from "./player";
 import { RigidBody } from "@react-three/rapier";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 
 import Interface from "./interface";
+import GlowingFloor from "./glowingFloor";
 
 export default function base() {
   const { perfVisible } = useControls('Performance', {
@@ -55,10 +57,20 @@ export default function base() {
           shadow-camera-left={ - 10 }
         />
 
+        <EffectComposer>
+          <Bloom intensity={0.5} mipmapBlur={true} radius={0.6}/>
+          <Vignette offset={0.4} darkness={0.6}/>
+        </EffectComposer>
+
         <Physics debug={true}>
           <Player />
 
           <group rotation={[0, Math.PI/4, 0]}>
+            <GlowingFloor position={[4, -0.04, -2]} color={'#ffFF00'}/>
+            <GlowingFloor position={[-3, -0.04, -4]} color={'#00ff00'}/>
+            <GlowingFloor position={[-1, -0.04, 4]} color={'#00ffFF'}/>
+
+             {/* FLOOR */}s
             <Grid args={[30, 30]}  />
             <RigidBody type="kinematicPosition" position={[0, -0.1, 0]}>
               <mesh position={[0, -0.01, 0]} rotation={[Math.PI / -2, 0, 0]}>
