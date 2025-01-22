@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useMemo, useRef, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { CameraControls, useTexture } from "@react-three/drei";
+import { CameraControls, OrthographicCamera, useTexture } from "@react-three/drei";
 import { useControls } from "leva";
 import VertexShader from "../../shaders/particle/vertex.glsl";
 import FragmentShader from "../../shaders/particle/fragment.glsl";
@@ -190,7 +190,7 @@ export default function SampleBufferGeometry() {
       }}
     >
       <CameraControls makeDefault />
-      <ambientLight intensity={0.5} />  
+      <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 10]} />
 
       {/* <CustomGeometry /> */}
