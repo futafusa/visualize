@@ -28,6 +28,8 @@
     "zustand": "^5.0.2"
   },
   "devDependencies": {
+    "@egoist/tailwindcss-icons": "^1.8.2",
+    "@iconify/json": "^2.2.290",
     "@react-router/dev": "^7.0.2",
     "@types/node": "^20",
     "@types/react": "^18.3.12",

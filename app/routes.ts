@@ -7,6 +7,7 @@ import {
 
 export default [
   index("./routes/home.tsx"),
+  // route("about", "./routes/about.tsx"),
 
   // /visual/ 以下のルーティング
   route("visual", "./routes/visual/index.tsx", [
@@ -18,7 +19,9 @@ export default [
     route("ballAttract", "./routes/visual/ballAttract.tsx"),
     route("sampleShaderPattern", "./routes/visual/sampleShaderPattern.tsx"),
     route("imageSlide", "./routes/visual/imageSlide.tsx"),
-    // route("sampleCustomShader", "./routes/visual/sampleCustomShader.tsx"),
-    // route("wobble", "./routes/visual/wobble.tsx"),
+    route("sampleBufferGeometry", "./routes/visual/sampleBufferGeometry.tsx"),
+    route("sampleShaderNoise", "./routes/visual/sampleShaderNoise.tsx"),
+    route("studyGlsl", "./routes/visual/studyGlsl.tsx"),
+    route("customShaderMaterial", "./routes/visual/sampleCustomShader.tsx"),
   ]),
 ] satisfies RouteConfig;
