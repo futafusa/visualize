@@ -67,14 +67,14 @@ export default function base() {
           <Vignette offset={0.4} darkness={0.6}/>
         </EffectComposer>
 
-        <Physics debug={true}>
+        <Physics debug={false}>
           <Player cameraControls={cameraControls} />
 
           <group rotation={[0, Math.PI/4, 0]}>
-            <GlowingFloor position={[-3, -0.04, -4]} color={'#00ff00'}/>
-            <DamageObject position={[1, -0.04, -4]} size={[1, 1, 1]} color={'#ff0000'}/>
+            <GlowingFloor position={new THREE.Vector3(-3, -0.04, -4)} color={'#00ff00'}/>
+            <DamageObject position={new THREE.Vector3(1, -0.04, -4)} size={[1, 1, 1]} color={'#ff0000'}/>
 
-            <RespawnObject position={[4, -0.04, -4]} size={[1, 1, 1]} color={'#ffff00'}/>
+            <RespawnObject position={new THREE.Vector3(4, -0.04, -4)} size={[1, 1, 1]} color={'#ffff00'}/>
 
              {/* FLOOR */}s
             <Grid args={[20, 20]}  />
@@ -86,7 +86,7 @@ export default function base() {
             </RigidBody>
 
             {/* RESPAWN FLOOR */}
-            <RespawnObject position={[0, -10, 0]} size={[50, 1, 50]} color={'#ffffff'}/>
+            <RespawnObject position={new THREE.Vector3(0, -10, 0)} size={[50, 1, 50]} color={'#ffffff'}/>
           </group>
         </Physics>
       </Canvas>

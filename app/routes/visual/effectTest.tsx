@@ -2,35 +2,37 @@ import * as THREE from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Grid, CameraControls } from "@react-three/drei";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+import vertexShader from "../../shaders/gameEffect/damage/vertex.glsl";
 import fragmentShader from "../../shaders/gameEffect/damage/fragment.glsl";
 import { useControls } from "leva";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
-function FlashMaterial() {
-  const {isFlash} = useControls('Effect', {
-    isFlash: false,
+function DamageMaterial() {
+  const {isDamage} = useControls('Effect', {
+    isDamage: false,
   })
 
-  const flashMaterial = new CustomShaderMaterial({
+  const damageMaterial = new CustomShaderMaterial({
     baseMaterial: THREE.MeshStandardMaterial,
     metalness: 0,
     roughness: 1.0,
     wireframe: false,
+    vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     uniforms: {
       uTime: { value: 0 },
       uColor: { value: new THREE.Color('#ff0000') },
-      uIsFlash: { value: false },
+      uIsDamage: { value: false },
     },
   })
 
   useFrame(({clock}) => {
-    flashMaterial.uniforms.uTime.value = clock.getElapsedTime();
-    flashMaterial.uniforms.uIsFlash.value = isFlash;
+    damageMaterial.uniforms.uTime.value = clock.getElapsedTime();
+    damageMaterial.uniforms.uIsDamage.value = isDamage;
   })
 
   return (
-    <mesh material={flashMaterial}>
+    <mesh material={damageMaterial}>
       <icosahedronGeometry args={[1, 8]} />
       {/* <meshStandardMaterial color="red" /> */}
     </mesh>
@@ -72,7 +74,7 @@ export default function EffectTest() {
         <Bloom intensity={0.5} mipmapBlur={true} radius={0.6}/>
       </EffectComposer>
 
-      <FlashMaterial />
+      <DamageMaterial />
 
       <Grid args={[30, 30]} position={[0, -1, 0]} />
     </Canvas>

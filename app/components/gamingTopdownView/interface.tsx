@@ -1,15 +1,22 @@
 import { useKeyboardControls } from "@react-three/drei";
 
 function ButtonKey(props: { name: string, width: number, isActive: boolean}) {
-  const setClassWidth = () => {
-    const classWidth = `w-${props.width}`;
-    return classWidth;
+  const getWidthClass = () => {
+    switch(props.width) {
+      case 10:
+        return 'w-10';
+      case 20:
+        return 'w-20';
+      default:
+        return 'w-10';
+    }
   }
+  
   return (
     <div data-name={props.name} 
       className={`h-10 border-2 border-white rounded-lg
-      ${setClassWidth()}
-      ${props.isActive ? 'bg-white' : ' bg-white/1a0'}`}>
+      ${getWidthClass()}
+      ${props.isActive ? 'bg-white' : 'bg-white/10'}`}>
     </div>
   )
 }

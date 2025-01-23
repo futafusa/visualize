@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+import vertexShaderDamage from "../../shaders/gameEffect/damage/vertex.glsl";
 import fragmentShaderDamage from "../../shaders/gameEffect/damage/fragment.glsl";
 
 export default function Player({ cameraControls }: { cameraControls: boolean }) {
@@ -19,12 +20,13 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
     metalness: 0,
     roughness: 1.0,
     wireframe: false,
+    vertexShader: vertexShaderDamage,
     fragmentShader: fragmentShaderDamage,
     flatShading: true,
     uniforms: {
       uTime: { value: 0 },
       uColor: { value: new THREE.Color('#ff0000') },
-      uIsFlash: { value: false },
+      uIsDamage: { value: false },
     },
   })
 
@@ -51,11 +53,12 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
   }
 
   const handlerDamage = () => {
-    playerMaterial.uniforms.uIsFlash.value = true;
-
+    playerMaterial.uniforms.uIsDamage.value = true;
     setTimeout(() => {
-      playerMaterial.uniforms.uIsFlash.value = false;
+      playerMaterial.uniforms.uIsDamage.value = false;
     }, 500);
+
+    refPlayer.current?.applyImpulse({x: 0, y: 3, z: 0}, true);
   }
 
   const handleCollisionEnter = (event: CollisionEnterPayload) => {
