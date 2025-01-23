@@ -24,5 +24,6 @@ export default [
     route("studyGlsl", "./routes/visual/studyGlsl.tsx"),
     route("customShaderMaterial", "./routes/visual/sampleCustomShader.tsx"),
     route("gamingTopdownView", "./routes/visual/gamingTopdownView.tsx"),
+    route("effectTest", "./routes/visual/effectTest.tsx"),
   ]),
 ] satisfies RouteConfig;

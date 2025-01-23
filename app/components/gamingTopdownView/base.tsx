@@ -10,10 +10,15 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 
 import Interface from "./interface";
 import GlowingFloor from "./glowingFloor";
+import RespawnObject from "./respawnObject";
+import DamageObject from "./damageObject";
 
 export default function base() {
   const { perfVisible } = useControls('Performance', {
     perfVisible: false
+  });
+  const { cameraControls } = useControls('Camera', {
+    cameraControls: false
   });
 
   return (
@@ -43,7 +48,7 @@ export default function base() {
       >
         {perfVisible && <Perf position="bottom-right" />}
 
-        {/* <CameraControls /> */}
+        {cameraControls && <CameraControls />}
         <directionalLight
           castShadow
           position={ [ 4, 4, 1 ] }
@@ -63,21 +68,25 @@ export default function base() {
         </EffectComposer>
 
         <Physics debug={true}>
-          <Player />
+          <Player cameraControls={cameraControls} />
 
           <group rotation={[0, Math.PI/4, 0]}>
-            <GlowingFloor position={[4, -0.04, -2]} color={'#ffFF00'}/>
             <GlowingFloor position={[-3, -0.04, -4]} color={'#00ff00'}/>
-            <GlowingFloor position={[-1, -0.04, 4]} color={'#00ffFF'}/>
+            <DamageObject position={[1, -0.04, -4]} size={[1, 1, 1]} color={'#ff0000'}/>
+
+            <RespawnObject position={[4, -0.04, -4]} size={[1, 1, 1]} color={'#ffff00'}/>
 
              {/* FLOOR */}s
-            <Grid args={[30, 30]}  />
+            <Grid args={[20, 20]}  />
             <RigidBody type="kinematicPosition" position={[0, -0.1, 0]}>
               <mesh position={[0, -0.01, 0]} rotation={[Math.PI / -2, 0, 0]}>
-              <boxGeometry args={[30, 30, 0.1]} />
+              <boxGeometry args={[20, 20, 0.1]} />
               <meshStandardMaterial color={'#000000'} />
               </mesh>
             </RigidBody>
+
+            {/* RESPAWN FLOOR */}
+            <RespawnObject position={[0, -10, 0]} size={[50, 1, 50]} color={'#ffffff'}/>
           </group>
         </Physics>
       </Canvas>
