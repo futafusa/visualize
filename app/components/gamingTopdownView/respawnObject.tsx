@@ -1,4 +1,4 @@
-import { RigidBody } from "@react-three/rapier";
+import { RigidBody, CuboidCollider } from "@react-three/rapier";
 import { useRef } from "react";
 import * as THREE from "three";
 import { Text } from "@react-three/drei";
@@ -17,6 +17,7 @@ export default function RespawnObject(
         name="respawnObject"
         type="fixed"
         position={props.position}
+        // colliders={false}
       >
         <mesh ref={refMesh}>
           <boxGeometry args={props.size} />
@@ -28,6 +29,7 @@ export default function RespawnObject(
             // metalness={0.8}
           />
         </mesh>
+        {/* <CuboidCollider args={props.size} position={[0, 0, 0]} /> */}
       </RigidBody>
       <Text
         scale={0.1}
