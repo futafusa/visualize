@@ -29,6 +29,8 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
 
   const [playerHp, setPlayerHp] = useState<number>(100);
 
+  const [isPickup, setIsPickup] = useState<boolean>(false);
+
   const animations = {
     idle: '/models/Idle.fbx',
     walk: '/models/Walking.fbx',
@@ -135,31 +137,6 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     }, 50);
   }
 
-  // useEffectでHPの監視を行う
-  useEffect(() => {
-    if(playerHp <= 0) {
-      handlerRespawn();
-    }
-  }, [playerHp]);
-
-  const handleCollisionEnter = (event: CollisionEnterPayload) => {
-    const collidingObject = event.other.rigidBodyObject;
-
-    if(collidingObject?.name === 'damageObject') {
-      console.log('damage');
-      refPlayer.current?.setLinvel({x: 0, y: 0, z: 0}, true);
-      refPlayer.current?.setAngvel({x: 0, y: 0, z: 0}, true);
-      refPlayer.current?.applyImpulse({x: 0, y: 2, z: 0}, true);
-      // refPlayer.current?.applyTorqueImpulse({x: 0, y: 10, z: 0}, true);
-      setVrmMaterialColor('#ff0000', 0.5);
-      setPlayerHp(prevHp => prevHp - 20);
-    }
-
-    if(collidingObject?.name === 'respawnObject') {
-      handlerRespawn();
-    }
-  }
-
   const setVrmMaterialColor = (color: THREE.ColorRepresentation = 0xff0000, duration: number = 0.5) => {
     if (!vrm) return;
 
@@ -192,6 +169,57 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
 
     flash();
   }
+
+  // useEffectでHPの監視を行う
+  useEffect(() => {
+    if(playerHp <= 0) {
+      handlerRespawn();
+    }
+  }, [playerHp]);
+
+  const handleCollisionEnter = (event: CollisionEnterPayload) => {
+    const collidingObject = event.other.rigidBodyObject;
+
+    if(collidingObject?.name === 'damageObject') {
+      console.log('damage');
+      refPlayer.current?.setLinvel({x: 0, y: 0, z: 0}, true);
+      refPlayer.current?.setAngvel({x: 0, y: 0, z: 0}, true);
+      refPlayer.current?.applyImpulse({x: (Math.random() - 0.5) * 2, y: 2, z: (Math.random() - 0.5) * 2}, true);
+      // refPlayer.current?.applyTorqueImpulse({x: 0, y: 10, z: 0}, true);
+      setVrmMaterialColor('#ff0000', 0.5);
+      setPlayerHp(prevHp => prevHp - 25);
+    }
+
+    if(collidingObject?.name === 'respawnObject') {
+      handlerRespawn();
+    }
+
+    if(collidingObject?.name === 'pickupObject') {
+      console.log('pickup');
+    }
+  }
+
+  //  調べる関係の処理、後で頑張るかも
+  // const handleIntersectionEnter = (event: any) => {
+  //   console.log(event);
+  //   const colliderOther = event.other.rigidBodyObject;
+
+  //   if(colliderOther?.name === 'pickupObject') {
+  //     setIsPickup(true);
+  //   }
+  // }
+
+  // const handleIntersectionExit = (event: any) => {
+  //   const colliderOther = event.other.rigidBodyObject;
+
+  //   if(colliderOther?.name === 'pickupObject') {
+  //     setIsPickup(false);
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   console.log(isPickup);
+  // }, [isPickup]);
 
   // アニメーション
   useFrame((state, delta) => {
@@ -231,10 +259,10 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     const isPlayerRun = run;
     if(isJump) {
       setSelectAnimation('jump');
-    } else if(isPlayerMove && isPlayerRun) {
-      setSelectAnimation('run');
+    // } else if(isPlayerMove && isPlayerRun) {
+    //   setSelectAnimation('run');
     } else if(isPlayerMove) {
-      setSelectAnimation('walk');
+      setSelectAnimation('run');
     } else {
       setSelectAnimation('idle');
     }
@@ -246,6 +274,7 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
         const cameraPosition = new THREE.Vector3();
         cameraPosition.copy(playerPosition);
         cameraPosition.y += 15;
+        // cameraPosition.x -= 15;
         cameraPosition.z -= 15;
 
         const cameraTarget = new THREE.Vector3();
@@ -274,7 +303,6 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
       {vrm ? (
         <group>
           <Ecctrl
-            debug={true}
             name="player"
             ref={refPlayer}
             characterInitDir={Math.PI}
@@ -284,12 +312,14 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
             capsuleRadius={0.3}
             floatHeight={0}
             autoBalanceSpringOnY={1}
-            maxVelLimit={2}
-            jumpVel={4}
+            maxVelLimit={3}
+            jumpVel={5}
             onCollisionEnter={handleCollisionEnter}
             jumpForceToGroundMult={0}
             slopJumpMult={0}
             autoBalanceSpringK={1}
+            // onIntersectionEnter={handleIntersectionEnter}
+            // onIntersectionExit={handleIntersectionExit}
           >
             <primitive
               ref={refModel}
@@ -301,10 +331,20 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
               {/* <div className="bg-white text-black text-center text-xs">
                 <p>HP: {playerHp}</p>
               </div> */}
-              <div className="bg-black text-white w-[100px] h-[10px] border-solid border-white border-2">
+              <div className="bg-black text-white w-[100px] h-[10px] border-solid border-white border-2 z-0">
                 <div className={`flex justify-center items-center h-full ${updateHpBar()}`} style={{width: `${playerHp}%`}} />
               </div>
             </Html>
+            {/* {isPickup && (
+              <Html center style={{ color: 'white' }} position={[0, -1.4, 0]}>
+                <div className=" text-white text-center text-sm w-[80px] rounded-md py-1 flex justify-center items-center gap-2">
+                  <div className="bg-white text-black text-center text-sm w-[25px] h-[25px] rounded-md py-1 flex justify-center items-center">
+                    F
+                  </div>
+                  <p>調べる</p>
+                </div>
+              </Html>
+            )} */}
           </Ecctrl>
         </group>
       ) : (

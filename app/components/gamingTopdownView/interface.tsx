@@ -16,9 +16,9 @@ function ButtonKey(props: { name: string, width: number, isActive: boolean}) {
   
   return (
     <div data-name={props.name} 
-      className={`h-10 border-2 border-white rounded-lg
+      className={`h-10 border-2 border-black rounded-lg
       ${getWidthClass()}
-      ${props.isActive ? 'bg-white' : 'bg-white/10'}`}>
+      ${props.isActive ? 'bg-black' : 'bg-black/10'}`}>
     </div>
   )
 }
@@ -43,7 +43,7 @@ export default function Interface() {
           <ButtonKey name="rightward" width={10} isActive={rightward} />
         </div>
         <div className="flex justify-center gap-2">
-          <ButtonKey name="shift" width={20} isActive={run} />
+          {/* <ButtonKey name="shift" width={20} isActive={run} /> */}
           <ButtonKey name="space" width={20} isActive={jump} />
         </div>
       </div>

@@ -7,9 +7,12 @@ import { Physics, RigidBody, ConeCollider } from "@react-three/rapier";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 
 import Interface from "./interface";
-import GlowingFloor from "./glowingFloor";
+import DebugStage from "./stageDebug";
+import FloorBasic from "./floorBasic";
 import RespawnObject from "./respawnObject";
 import DamageObject from "./damageObject";
+import PickupObject from "./pickupObject";
+
 // import Player from "./player";
 import PlayerVrm from "./playerVrm";
 
@@ -27,7 +30,8 @@ export default function base() {
     { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
     { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
     { name: 'jump', keys: ['Space'] },
-    { name: "run", keys: ["Shift"] },
+    // { name: "run", keys: ["Shift"] },
+    { name: "pickup", keys: ["F"] }, 
   ]
 
   return (
@@ -61,45 +65,29 @@ export default function base() {
           <Vignette offset={0.4} darkness={0.6}/>
         </EffectComposer>
 
-        <Physics debug={true} timeStep="vary">
+        <Physics debug={false}>
           {/* <Player cameraControls={cameraControls} /> */}
           <PlayerVrm cameraControls={cameraControls} />
 
-          <group rotation={[0, Math.PI - Math.PI / 4, 0]}>
-            <GlowingFloor position={new THREE.Vector3(-3, -0.04, -4)} color={'#00ff00'}/>
-            <DamageObject position={new THREE.Vector3(1, -0.04, -4)} size={[1, 1, 1]} color={'#ff0000'}/>
+          <FloorBasic position={[0, 0, 0]} size={[4, 4]} color={'#222222'} />
+          <FloorBasic position={[-3, 0, 3]} size={[2.5, 2.5]} color={'#222222'} moveSlide={true} />
+          <FloorBasic position={[-6, 0, 6]} size={[4, 4]} color={'#222222'} />
+          <DamageObject position={new THREE.Vector3(-6, 0, 6)} size={[2.5, 0.2, 2.5]} color={'#ff0000'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
+          <FloorBasic position={[-9, 0, 9]} size={[2.5, 2.5]} color={'#222222'} moveLift={true} />
+          <FloorBasic position={[-12, 2, 12]} size={[4, 4]} color={'#222222'} />
+          <PickupObject position={new THREE.Vector3(-12, 2.5, 12)} size={[0.2, 0.2, 0.2]} color={'#00ff00'} rotation={[0, Math.PI - Math.PI / 4, 0]}>
+            Gundam GQuuuuuuX 面白かったね
+          </PickupObject>
+          <RespawnObject position={new THREE.Vector3(-14, 2, 14)} size={[4, 0.2, 1.5]} color={'#ffff00'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
 
-            <RespawnObject position={new THREE.Vector3(4, -0.04, -4)} size={[1, 1, 1]} color={'#ffff00'}/>
-
-             {/* FLOOR */}s
-            <Grid args={[20, 20]}  />
-            <RigidBody name="floor" type="fixed" position={[0, -0.1, 0]}>
-              <mesh position={[0, 0, 0]} rotation={[Math.PI / -2, 0, 0]}>
-              <boxGeometry args={[20, 20, 0.1]} />
-              <meshStandardMaterial color={'#000000'} />
-              </mesh>
-            </RigidBody>
-
-            {/* 離れ小島 */}
-            <RigidBody name="floor2" type="fixed" position={[0, -0.1, 0]}>
-              <mesh position={[14, -0.01, 0]} rotation={[Math.PI / -2, 0, 0]}>
-              <boxGeometry args={[4, 4, 0.1]} />
-              <meshStandardMaterial color={'#000000'} />
-              </mesh>
-            </RigidBody>
-
-            {/* 斜面 */}
-            <RigidBody name="floor3" type="fixed" position={[0, -0.1, 0]} colliders={false} friction={2} restitution={2} >
-              <mesh position={[-3, 1, 3]} rotation={[0, 0, 0]}>
-                <coneGeometry args={[3, 2, 32]} />
-                <meshStandardMaterial color={'#000000'} />
-              </mesh>
-              <ConeCollider args={[1, 3]} position={[-3, 1, 3]} />
-            </RigidBody>
-            {/* RESPAWN FLOOR */}
-            <RespawnObject position={new THREE.Vector3(0, -10, 0)} size={[50, 1, 50]} color={'#ffffff'}/>
-          </group>
+          {/* RESPAWN FLOOR */}
+          <RespawnObject position={new THREE.Vector3(0, -10, 0)} size={[50, 0.5, 100]} color={'#ffffff'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
+          {/* <DebugStage /> */}
         </Physics>
+        {/* <Grid
+          args={[20, 20]}
+          position={[0, 0, 0]}
+        /> */}
       </Canvas>
       <Interface />
     </KeyboardControls>
