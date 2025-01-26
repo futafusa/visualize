@@ -7,7 +7,9 @@ export default function DamageObject(
 	props: {
 		position: THREE.Vector3,
 		size: [number, number, number],
-		color: string},
+		color: string,
+    rotation: [number, number, number],
+  },
 ) {
   const refMesh = useRef<THREE.Mesh>(null);
 
@@ -17,6 +19,7 @@ export default function DamageObject(
         name="damageObject"
         type="fixed"
         position={props.position}
+        rotation={props.rotation}
       >
         <mesh ref={refMesh}>
           <boxGeometry args={props.size} />
@@ -29,13 +32,13 @@ export default function DamageObject(
           />
         </mesh>
       </RigidBody>
-      <Text
+      {/* <Text
         scale={0.1}
         position={props.position.clone().add(new THREE.Vector3(0, 1, -0.5))}
         fontSize={4}
       >
         Damage
-      </Text>
+      </Text> */}
     </group>
   );
 }
