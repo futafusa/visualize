@@ -8,11 +8,8 @@ import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 
 import Interface from "./interface";
 import DebugStage from "./stageDebug";
-import FloorBasic from "./floorBasic";
-import RespawnObject from "./respawnObject";
-import DamageObject from "./damageObject";
-import PickupObject from "./pickupObject";
-
+import StageAction01 from "./stageAction01";
+import Bgm from "./bgm";
 // import Player from "./player";
 import PlayerVrm from "./playerVrm";
 
@@ -24,6 +21,13 @@ export default function base() {
     cameraControls: false
   });
 
+  const { selectStage } = useControls('Stage', {
+    selectStage: {
+      value: 'stageAction01',
+      options: ['stageAction01', 'stageDebug']
+    }
+  });
+
   const keyboardMap = [
     { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
     { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
@@ -31,7 +35,7 @@ export default function base() {
     { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
     { name: 'jump', keys: ['Space'] },
     // { name: "run", keys: ["Shift"] },
-    { name: "pickup", keys: ["F"] }, 
+    { name: "pickup", keys: ["KeyF"] }, 
   ]
 
   return (
@@ -69,20 +73,7 @@ export default function base() {
           {/* <Player cameraControls={cameraControls} /> */}
           <PlayerVrm cameraControls={cameraControls} />
 
-          <FloorBasic position={[0, 0, 0]} size={[4, 4]} color={'#222222'} />
-          <FloorBasic position={[-3, 0, 3]} size={[2.5, 2.5]} color={'#222222'} moveSlide={true} />
-          <FloorBasic position={[-6, 0, 6]} size={[4, 4]} color={'#222222'} />
-          <DamageObject position={new THREE.Vector3(-6, 0, 6)} size={[2.5, 0.2, 2.5]} color={'#ff0000'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
-          <FloorBasic position={[-9, 0, 9]} size={[2.5, 2.5]} color={'#222222'} moveLift={true} />
-          <FloorBasic position={[-12, 2, 12]} size={[4, 4]} color={'#222222'} />
-          <PickupObject position={new THREE.Vector3(-12, 2.5, 12)} size={[0.2, 0.2, 0.2]} color={'#00ff00'} rotation={[0, Math.PI - Math.PI / 4, 0]}>
-            Gundam GQuuuuuuX 面白かったね
-          </PickupObject>
-          <RespawnObject position={new THREE.Vector3(-14, 2, 14)} size={[4, 0.2, 1.5]} color={'#ffff00'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
-
-          {/* RESPAWN FLOOR */}
-          <RespawnObject position={new THREE.Vector3(0, -10, 0)} size={[50, 0.5, 100]} color={'#ffffff'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
-          {/* <DebugStage /> */}
+          {selectStage === 'stageAction01' ? <StageAction01 /> : <DebugStage />}
         </Physics>
         {/* <Grid
           args={[20, 20]}
@@ -90,6 +81,7 @@ export default function base() {
         /> */}
       </Canvas>
       <Interface />
+      <Bgm />
     </KeyboardControls>
   );
 }

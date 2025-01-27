@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { RigidBody, BallCollider } from "@react-three/rapier";
-import { useState } from "react";
-import { Html } from "@react-three/drei";
+import { useState, useEffect } from "react";
+import { Html, useKeyboardControls } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
 
 export default function PickupObject(
   props: {
@@ -13,12 +14,13 @@ export default function PickupObject(
   }
 ) {
   const [isPlayerEnter, setIsPlayerEnter] = useState<boolean>(false);
- 
+  const [showMessage, setShowMessage] = useState<boolean>(false);
+  const [_, getKeys] = useKeyboardControls();
+
   const handleIntersectionEnter = (event: any) => {
     const colliderOther = event.other.rigidBodyObject;
 
     if(colliderOther?.name === 'player') {
-      console.log('playerCheckIn');
       setIsPlayerEnter(true);
     }
   }
@@ -27,10 +29,18 @@ export default function PickupObject(
     const colliderOther = event.other.rigidBodyObject;
 
     if(colliderOther?.name === 'player') {
-      console.log('playerCheckOut');
       setIsPlayerEnter(false);
     }
   }
+
+  useFrame(() => {
+    const { pickup } = getKeys();
+    if(pickup) {
+      setShowMessage(true);
+    } else {
+      setShowMessage(false);
+    }
+  })
 
   return (
     <group position={props.position} rotation={props.rotation}>
@@ -49,27 +59,10 @@ export default function PickupObject(
           />
         </mesh>
       </RigidBody>
-      {isPlayerEnter ? (
+      {isPlayerEnter && !showMessage ? (
         <Html center position={[0, 0, 0]} zIndexRange={[16777300, 16777271]}>
           <div className="
-            bg-white text-black text-center text-sm w-[160px] rounded-md px-1 py-1 flex justify-center items-center
-              -translate-y-20
-              before:content-['']
-              before:absolute
-              before:-translate-x-1/2
-              before:left-1/2
-              before:top-[99%]
-              before:border-8
-              before:border-transparent
-              before:border-t-white
-            ">
-            {props.children}
-          </div>
-        </Html>
-      ) : (
-        <Html center position={[0, 0, 0]} zIndexRange={[16777300, 16777271]}>
-          <div className="
-          bg-white text-black text-center text-sm w-[30px] h-[30px] rounded-md px-1 py-1 flex justify-center items-center
+            bg-white text-black text-center text-sm rounded-md py-2 flex justify-center items-center gap-1 w-[100px]
             -translate-y-20
             before:content-['']
             before:absolute
@@ -80,10 +73,30 @@ export default function PickupObject(
             before:border-transparent
             before:border-t-white
           ">
-            ?
+            <div className="bg-white text-black text-center text-sm w-[25px] h-[25px] rounded-md flex justify-center items-center border border-black">
+              F
+            </div>
+            <div className="px-2">調べる</div>
           </div>
         </Html>
-      )}
+      ) : isPlayerEnter && showMessage ? (
+        <Html center position={[0, 0, 0]} zIndexRange={[16777300, 16777271]}>
+          <div className="
+            bg-white text-black text-center text-sm w-[160px] rounded-md px-2 py-2 flex justify-center items-center
+            -translate-y-20
+            before:content-['']
+            before:absolute
+            before:-translate-x-1/2
+            before:left-1/2
+            before:top-[99%]
+            before:border-8
+            before:border-transparent
+            before:border-t-white
+          ">
+            {props.children}
+          </div>
+        </Html>
+      ) : null}
     </group>
   );
 } 
