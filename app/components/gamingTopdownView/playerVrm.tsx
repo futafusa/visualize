@@ -9,7 +9,6 @@ import { useControls } from "leva";
 import { useKeyboardControls } from "@react-three/drei";
 import { RigidBody, type RapierRigidBody, CapsuleCollider, useRapier, CollisionEnterPayload } from "@react-three/rapier";
 import Ecctrl, { EcctrlAnimation, type CustomEcctrlRigidBody } from "ecctrl";
-import { $ } from "node_modules/react-router/dist/development/fog-of-war-BkI3XFdx.mjs";
 
 export default function PlayerVrm({ cameraControls }: { cameraControls: boolean }) {
   const [vrm, setVrm] = useState<VRM | null>(null);
@@ -199,28 +198,6 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     }
   }
 
-  //  調べる関係の処理、後で頑張るかも
-  // const handleIntersectionEnter = (event: any) => {
-  //   console.log(event);
-  //   const colliderOther = event.other.rigidBodyObject;
-
-  //   if(colliderOther?.name === 'pickupObject') {
-  //     setIsPickup(true);
-  //   }
-  // }
-
-  // const handleIntersectionExit = (event: any) => {
-  //   const colliderOther = event.other.rigidBodyObject;
-
-  //   if(colliderOther?.name === 'pickupObject') {
-  //     setIsPickup(false);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   console.log(isPickup);
-  // }, [isPickup]);
-
   // アニメーション
   useFrame((state, delta) => {
     // 地面との接触判定
@@ -240,7 +217,7 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
       //   undefined, // 除外対象のRigidBodyハンドル
       // );
 
-      if(hit && Math.abs(hit.timeOfImpact) > 0.15) {
+      if(hit && hit.timeOfImpact > 0.15) {
         setIsJump(true);
       } else {
         setIsJump(false);
@@ -254,13 +231,10 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     }
 
     // player control
-    const {forward, backward, leftward, rightward, jump, run} = getKeys();
+    const {forward, backward, leftward, rightward, jump} = getKeys();
     const isPlayerMove = forward || backward || leftward || rightward;
-    const isPlayerRun = run;
     if(isJump) {
       setSelectAnimation('jump');
-    // } else if(isPlayerMove && isPlayerRun) {
-    //   setSelectAnimation('run');
     } else if(isPlayerMove) {
       setSelectAnimation('run');
     } else {

@@ -16,9 +16,9 @@ function ButtonKey(props: { name: string, width: number, isActive: boolean}) {
   
   return (
     <div data-name={props.name} 
-      className={`h-10 border-2 border-black rounded-lg
+      className={`h-10 border-2 border-gray-500 rounded-lg
       ${getWidthClass()}
-      ${props.isActive ? 'bg-black' : 'bg-black/10'}`}>
+      ${props.isActive ? 'bg-gray-500' : 'bg-gray-500/10'}`}>
     </div>
   )
 }
@@ -33,7 +33,7 @@ export default function Interface() {
 
   return (
     <div className="absolute top-0 left-0 w-full h-full text-white pointer-events-none">
-      <div className="flex flex-col gap-2 absolute bottom-[5%] left-0 w-full">
+      <div className="flex flex-col gap-2 absolute bottom-[5%] left-0 w-full pointer-events-none">
         <div className="flex justify-center">
           <ButtonKey name="forward" width={10} isActive={forward} />
         </div>
