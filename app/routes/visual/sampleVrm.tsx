@@ -2,94 +2,42 @@ import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { CameraControls, Grid, Html } from "@react-three/drei";
-import { VRMLoaderPlugin, VRMHumanBoneName, VRM } from '@pixiv/three-vrm';
+import { VRMLoaderPlugin, VRM, VRMUtils } from '@pixiv/three-vrm';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { loadMixamoAnimation } from '../../components/common/loadMixamoAnimation';
 import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 
-function DisplayVrm() {
-  const [vrm, setVrm] = useState<VRM | null>(null);
-  const [progress, setProgress] = useState<number>(0);
-  const [vrmBone, setVrmBone] = useState<any | null>(null);
+function DisplayVrm({ onLoadVRM }: { onLoadVRM: VRM }) {
   const [AnimationMixer, setAnimationMixer] = useState<THREE.AnimationMixer | null>(null);
   const [animationClips, setAnimationClips] = useState<any[] | null>(null);
-  const { camera } = useThree();
 
   const animations = {
     idle: '/models/Idle.fbx',
     walk: '/models/Walking.fbx',
     run: '/models/Running.fbx',
     falling: '/models/Falling.fbx',
+    jump: '/models/Jump.fbx',
   };
 
-  // const { selectAnimation } = useControls('Animation', {
-  //   selectAnimation : {
-  //     options: Object.keys(animations)
-  //   }
-  // });
-
-  // vrmの読み込み
-  useEffect(() => {
-    if(vrm) return;
-
-    const loader = new GLTFLoader();
-    loader.register((parser) => new VRMLoaderPlugin(parser));
-  
-    loader.load('/models/AliciaSolid.vrm', (gltf) => {
-      // console.log(gltf);
-      const vrm = gltf.userData.vrm;
-      setVrm(vrm);
-
-      vrm.lookAt.target = camera;
-
-      // ボーンの取得
-      const bones = {
-        head: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.Head),
-        neck: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Neck),
-        hips: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Hips),
-        spine: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Spine),
-        upperChest: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.UpperChest),
-        leftArm: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.LeftUpperArm),
-        rightArm: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.RightUpperArm)
-      }
-      setVrmBone(bones);
-    },
-    (xhr) => {
-      setProgress((xhr.loaded / xhr.total) * 100)
-    },
-    (error) => {
-      console.log(error)
+  const { selectAnimation } = useControls('Animation', {
+    selectAnimation : {
+      options: Object.keys(animations)
     }
-  );
-  }, []);
-
-  // 初期ボーンの位置の設定
-  // useEffect(() => {
-  //   if(vrmBone) {
-  //     vrmBone.leftArm.rotation.z = THREE.MathUtils.degToRad(70);
-  //     vrmBone.rightArm.rotation.z = -THREE.MathUtils.degToRad(70);
-  //   }
-  // }, [vrmBone]);
+  });
 
   // アニメーションの読み込み
   useEffect(() => {
-    if (!vrm) return;
+    if (!onLoadVRM) return;
 
     const loadAnimations = async () => {
       try {
-        // const animationClips = await Promise.all([
-        //   loadMixamoAnimation(animations.idle, vrm, 'idle'),
-        //   loadMixamoAnimation(animations.walk, vrm, 'walk'),
-        //   loadMixamoAnimation(animations.run, vrm, 'run'),
-        //   loadMixamoAnimation(animations.falling, vrm, 'falling'),
-        // ]);
         const animationClips = await Promise.all(Object.values(animations).map((animation, index) => {
-          return loadMixamoAnimation(animation, vrm, Object.keys(animations)[index]);
+          return loadMixamoAnimation(animation, onLoadVRM, Object.keys(animations)[index]);
         }));
         setAnimationClips(animationClips);
 
-        const currentMixer = new THREE.AnimationMixer(vrm.scene);
+        const currentMixer = new THREE.AnimationMixer(onLoadVRM.scene);
         const defaultAnimation = animationClips[0];
         
         if (defaultAnimation) {
@@ -102,40 +50,32 @@ function DisplayVrm() {
     };
 
     loadAnimations();
-  }, [vrm]);
+  }, [onLoadVRM]);
 
-  // useEffect(() => {
-  //   if(!AnimationMixer || !animationClips) return;
-  //   console.log(animationClips);
+  useEffect(() => {
+    if(!AnimationMixer || !animationClips) return;
+    
+    const animationIndex = Object.keys(animations).indexOf(selectAnimation);
+    const newAction = AnimationMixer.clipAction(animationClips[animationIndex]);
+    newAction.reset().fadeIn(0.3).play();
+    
+    return () => {
+      newAction.fadeOut(0.3);
+    }
+  }, [selectAnimation]);
 
-  //   const action = AnimationMixer.clipAction(animationClips[3]);
-  //   action.reset().fadeIn(0.5).play();
-  //   setAnimationMixer(AnimationMixer);
-
-  //   return () => {
-  //     action.fadeOut(0.5);
-  //   }
-  // }, [selectAnimation]);
-
-   // アニメーション
+  // アニメーション更新
   useFrame((state, delta) => {
     const time = state.clock.getElapsedTime();
 
-    if(vrm && AnimationMixer) {
-      vrm.update(delta);
+    if(onLoadVRM && AnimationMixer) {
+      onLoadVRM.update(delta);
       AnimationMixer.update(delta);
-      // vrmBone.neck.rotation.y = Math.sin(time / Math.PI*2);
     }
   });
 
   return (
-    <>
-      {vrm ? (
-        <primitive object={vrm.scene} />
-      ) : (
-        <Html center style={{ color: 'white' }}>{progress}</Html>
-      )}
-    </>
+    <primitive object={onLoadVRM.scene} />
   );
 }
 
@@ -144,6 +84,44 @@ export default function SampleVrm() {
     perfVisible: false
   });
   const refCameraControls = useRef<CameraControls | null>(null);
+  const [vrm, setVrm] = useState<VRM | null>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const loader = new GLTFLoader();
+  loader.register((parser) => new VRMLoaderPlugin(parser));
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files[0];
+    if (file && file.name.endsWith('.vrm')) {
+      const url = URL.createObjectURL(file);
+      loadVRM(url);
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+  };
+
+  const loadVRM = (path: string) => {
+    loader.load(path, (gltf) => {
+      const vrm = gltf.userData.vrm;
+      VRMUtils.removeUnnecessaryVertices(gltf.scene);
+      VRMUtils.combineSkeletons(gltf.scene);
+      VRMUtils.combineMorphs(vrm);
+      setVrm(vrm);
+    },
+    (xhr) => {
+      setProgress((xhr.loaded / xhr.total) * 100)
+    },
+    (error) => {
+      console.log(error)
+    });
+  }
+
+  // 初回vrmの読み込み
+  useEffect(() => {
+    loadVRM('/models/AliciaSolid.vrm');
+  }, []);
 
   return (
     <>
@@ -174,9 +152,26 @@ export default function SampleVrm() {
         />
         <ambientLight intensity={1.0} />
 
-        <DisplayVrm />
+        {vrm && <DisplayVrm onLoadVRM={vrm} />}
         <Grid position={[0, 0, 0]} infiniteGrid={true} fadeDistance={20} />
       </Canvas>
+      <div
+        className="
+          absolute bottom-8 left-8
+          w-[200px] h-[200px] z-1000
+          flex justify-center items-center
+          rounded-lg border border-dashed border-white/
+          bg-black/50
+        "
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+      >
+        <p className="text-white text-center text-sm"
+          dangerouslySetInnerHTML={{
+            __html: progress < 100 ? `Loading... ${progress}%` : 'Drag & Drop <br /> .vrm Data'
+          }}
+        />
+      </div>
     </>
   );
 }

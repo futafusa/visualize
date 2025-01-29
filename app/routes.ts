@@ -14,7 +14,6 @@ export default [
     route("sampleAudio", "./routes/visual/sampleAudio.tsx"),
     route("sampleSimpleThree", "./routes/visual/sampleSimpleThree.tsx"),
     route("shaderWater", "./routes/visual/shaderWater.tsx"),
-    route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
     route("manyCircle", "./routes/visual/manyCircle.tsx"),
     route("ballAttract", "./routes/visual/ballAttract.tsx"),
     route("sampleShaderPattern", "./routes/visual/sampleShaderPattern.tsx"),
@@ -25,5 +24,6 @@ export default [
     route("customShaderMaterial", "./routes/visual/sampleCustomShader.tsx"),
     route("gamingTopdownView", "./routes/visual/gamingTopdownView.tsx"),
     route("effectTest", "./routes/visual/effectTest.tsx"),
+    route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
   ]),
 ] satisfies RouteConfig;
