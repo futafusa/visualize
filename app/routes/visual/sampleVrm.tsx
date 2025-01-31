@@ -54,11 +54,11 @@ function DisplayVrm({ onLoadVRM }: { onLoadVRM: VRM }) {
 
   useEffect(() => {
     if(!AnimationMixer || !animationClips) return;
-    
+
     const animationIndex = Object.keys(animations).indexOf(selectAnimation);
     const newAction = AnimationMixer.clipAction(animationClips[animationIndex]);
     newAction.reset().fadeIn(0.3).play();
-    
+
     return () => {
       newAction.fadeOut(0.3);
     }
@@ -79,18 +79,12 @@ function DisplayVrm({ onLoadVRM }: { onLoadVRM: VRM }) {
   );
 }
 
-export default function SampleVrm() {
-  const { perfVisible } = useControls('Performance', {
-    perfVisible: false
-  });
-  const refCameraControls = useRef<CameraControls | null>(null);
-  const [vrm, setVrm] = useState<VRM | null>(null);
-  const [progress, setProgress] = useState<number>(0);
-  const loader = new GLTFLoader();
-  loader.register((parser) => new VRMLoaderPlugin(parser));
+function DropVRM({ progress, loadVRM }: { progress: number, loadVRM: (path: string) => void }) {
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
+    setIsDragging(false);
     const file = event.dataTransfer.files[0];
     if (file && file.name.endsWith('.vrm')) {
       const url = URL.createObjectURL(file);
@@ -101,6 +95,62 @@ export default function SampleVrm() {
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
   };
+
+  const handleDragEnter = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(false);
+  };
+
+  return (
+    <div
+      className="
+        absolute bottom-0 left-0
+        w-full z-1000
+        flex justify-center items-center
+        px-4 pb-4
+      "
+    >
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragEnter={handleDragEnter}
+        onDragLeave={handleDragLeave}
+        className={`
+          rounded-lg border border-dashed border-white/50
+          bg-black/50
+          w-full
+          ${isDragging ? 'h-[210px]' : 'h-[60px]'}
+          transition-all duration-300
+          flex justify-center items-center
+        `}
+      >
+        <p
+          className="text-white text-center text-sm"
+          dangerouslySetInnerHTML={{
+            __html: progress < 100 ? `Loading... ${progress}%` : 'Drag & Drop .vrm Data'
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default function SampleVrm() {
+  const { perfVisible } = useControls('Performance', {
+    perfVisible: false
+  });
+  const refCameraControls = useRef<CameraControls | null>(null);
+
+  // load vrm
+  const [vrm, setVrm] = useState<VRM | null>(null);
+  const [progress, setProgress] = useState<number>(0);
+  const loader = new GLTFLoader();
+  loader.register((parser) => new VRMLoaderPlugin(parser));
 
   const loadVRM = (path: string) => {
     loader.load(path, (gltf) => {
@@ -142,8 +192,8 @@ export default function SampleVrm() {
       >
         {perfVisible && <Perf position="bottom-right" />}
 
-        <CameraControls 
-          makeDefault 
+        <CameraControls
+          makeDefault
           ref={refCameraControls}
           onUpdate={(self) => {
             // console.log(self);
@@ -155,23 +205,7 @@ export default function SampleVrm() {
         {vrm && <DisplayVrm onLoadVRM={vrm} />}
         <Grid position={[0, 0, 0]} infiniteGrid={true} fadeDistance={20} />
       </Canvas>
-      <div
-        className="
-          absolute bottom-8 left-8
-          w-[200px] h-[200px] z-1000
-          flex justify-center items-center
-          rounded-lg border border-dashed border-white/
-          bg-black/50
-        "
-        onDrop={handleDrop}
-        onDragOver={handleDragOver}
-      >
-        <p className="text-white text-center text-sm"
-          dangerouslySetInnerHTML={{
-            __html: progress < 100 ? `Loading... ${progress}%` : 'Drag & Drop <br /> .vrm Data'
-          }}
-        />
-      </div>
+      <DropVRM progress={progress} loadVRM={loadVRM} />
     </>
   );
 }
