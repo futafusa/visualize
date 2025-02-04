@@ -130,7 +130,7 @@ function DropVRM({ progress, loadVRM }: { progress: number, loadVRM: (path: stri
         `}
       >
         <p
-          className="text-white text-center text-sm"
+          className="text-white text-center text-sm pointer-events-none"
           dangerouslySetInnerHTML={{
             __html: progress < 100 ? `Loading... ${progress}%` : 'Drag & Drop .vrm Data'
           }}

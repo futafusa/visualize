@@ -1,34 +1,29 @@
 import { useState, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Html } from "@react-three/drei";
-import { VRMLoaderPlugin, VRMHumanBoneName, VRM } from '@pixiv/three-vrm';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { Html, Shadow, type ShadowType } from "@react-three/drei";
+import { type VRM } from '@pixiv/three-vrm';
 import { loadMixamoAnimation } from '../../components/common/loadMixamoAnimation';
 import { useControls } from "leva";
-import { useKeyboardControls } from "@react-three/drei";
+import { useKeyboardControls, useTexture } from "@react-three/drei";
 import { RigidBody, type RapierRigidBody, CapsuleCollider, useRapier, CollisionEnterPayload } from "@react-three/rapier";
 import Ecctrl, { EcctrlAnimation, type CustomEcctrlRigidBody } from "ecctrl";
 
-export default function PlayerVrm({ cameraControls }: { cameraControls: boolean }) {
-  const [vrm, setVrm] = useState<VRM | null>(null);
-  const [progress, setProgress] = useState<number>(0);
-  const [vrmBone, setVrmBone] = useState<any | null>(null);
+export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControls: boolean, onLoadVRM: VRM }) {
   const [AnimationMixer, setAnimationMixer] = useState<THREE.AnimationMixer | null>(null);
   const [animationClips, setAnimationClips] = useState<any[] | null>(null);
 
   const refPlayer = useRef<RapierRigidBody>(null);
   const refModel = useRef<THREE.Group>(null);
+  const refShadow = useRef<THREE.Mesh>(null);
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const [isJump, setIsJump] = useState<boolean>(false);
   const { rapier, world } = useRapier();
 
-  const [smoothCameraPosition, setSmoothCameraPosition] = useState(() => new THREE.Vector3(20, 20, 20));
-  const [smoothCameraTarget, setSmoothCameraTarget] = useState(() => new THREE.Vector3());
+  const [smoothCameraPosition] = useState(() => new THREE.Vector3(20, 20, 20));
+  const [smoothCameraTarget] = useState(() => new THREE.Vector3());
 
   const [playerHp, setPlayerHp] = useState<number>(100);
-
-  const [isPickup, setIsPickup] = useState<boolean>(false);
 
   const animations = {
     idle: '/models/Idle.fbx',
@@ -37,58 +32,20 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     jump: '/models/Jump.fbx',
   };
 
-  // const { selectAnimation } = useControls('Animation', {
-  //   selectAnimation : {
-  //     options: Object.keys(animations)
-  //   }
-  // });
   const [selectAnimation, setSelectAnimation] = useState<string>('idle');
-
-  // vrmの読み込み
-  useEffect(() => {
-    if(vrm) return;
-
-    const loader = new GLTFLoader();
-    loader.register((parser) => new VRMLoaderPlugin(parser));
-  
-    loader.load('/models/AliciaSolid.vrm', (gltf) => {
-      // console.log(gltf);
-      const vrm = gltf.userData.vrm;
-      setVrm(vrm);
-
-      // ボーンの取得
-      // const bones = {
-      //   head: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.Head),
-      //   neck: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Neck),
-      //   hips: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Hips),
-      //   spine: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.Spine),
-      //   upperChest: vrm.humanoid.getRawBoneNode(VRMHumanBoneName.UpperChest),
-      //   leftArm: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.LeftUpperArm),
-      //   rightArm: vrm.humanoid.getNormalizedBoneNode(VRMHumanBoneName.RightUpperArm)
-      // }
-      // setVrmBone(bones);
-      },
-    (xhr) => {
-      setProgress((xhr.loaded / xhr.total) * 100)
-    },
-    (error) => {
-      console.log(error)
-    }
-  );
-  }, []);
 
   // アニメーションの読み込み
   useEffect(() => {
-    if (!vrm) return;
+    if (!onLoadVRM) return;
 
     const loadAnimations = async () => {
       try {
         const animationClips = await Promise.all(Object.values(animations).map((animation, index) => {
-          return loadMixamoAnimation(animation, vrm, Object.keys(animations)[index]);
+          return loadMixamoAnimation(animation, onLoadVRM, Object.keys(animations)[index]);
         }));
         setAnimationClips(animationClips);
 
-        const currentMixer = new THREE.AnimationMixer(vrm.scene);
+        const currentMixer = new THREE.AnimationMixer(onLoadVRM.scene);
         const defaultAnimation = animationClips[0];
         
         if (defaultAnimation) {
@@ -101,7 +58,7 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
     };
 
     loadAnimations();
-  }, [vrm]);
+  }, [onLoadVRM]);
 
   // アニメーションの切り替え
   useEffect(() => {
@@ -137,14 +94,14 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
   }
 
   const setVrmMaterialColor = (color: THREE.ColorRepresentation = 0xff0000, duration: number = 0.5) => {
-    if (!vrm) return;
+    if (!onLoadVRM) return;
 
     let flashCount = 0;
     const maxFlashes = 3; // 点滅回数
     const intervalTime = duration * 1000 / (maxFlashes * 2); // 点滅の間隔
 
     const flash = () => {
-      vrm?.scene.traverse((object: any) => {
+      onLoadVRM.scene.traverse((object: any) => {
         if(object.material){
           if(Array.isArray(object.material)){
             object.material.forEach((material: any) => {
@@ -208,14 +165,18 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
       const rayDirection = {x: 0, y: -1, z: 0};
       const ray = new rapier.Ray(rayOrigin, rayDirection);
       const hit = world.castRay(ray, 50, true);
-      // const hit = world.castRay(
-      //   ray,
-      //   rayLength,
-      //   true, // 貫通を許可するか
-      //   undefined, // フィルターグループ
-      //   undefined, // 除外対象のColliderハンドル
-      //   undefined, // 除外対象のRigidBodyハンドル
-      // );
+
+      if(hit && refShadow.current) {
+        // プレイヤーの位置を取得し、Y座標のみ地面に合わせて調整
+        const playerPos = refModel.current?.position;
+        if (playerPos) {
+          refShadow.current.position.set(
+            playerPos.x,
+            -0.75 - hit.timeOfImpact, // 地面のすぐ上に配置して Z-fighting を防ぐ
+            playerPos.z
+          );
+        }
+      }
 
       if(hit && hit.timeOfImpact > 0.15) {
         setIsJump(true);
@@ -224,8 +185,8 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
       }
     }
 
-    if(vrm && AnimationMixer) {
-      vrm.update(delta);
+    if(onLoadVRM && AnimationMixer) {
+      onLoadVRM.update(delta);
       AnimationMixer.update(delta);
       // vrmBone.neck.rotation.y = Math.sin(time / Math.PI*2);
     }
@@ -274,56 +235,49 @@ export default function PlayerVrm({ cameraControls }: { cameraControls: boolean 
 
   return (
     <>
-      {vrm ? (
-        <group>
-          <Ecctrl
-            name="player"
-            ref={refPlayer}
-            characterInitDir={Math.PI}
-            disableFollowCam={true}
-            disableFollowCamPos={{ x: 0, y: 15, z: -15 }}
-            capsuleHalfHeight={0.5}
-            capsuleRadius={0.3}
-            floatHeight={0}
-            autoBalanceSpringOnY={1}
-            maxVelLimit={3}
-            jumpVel={5}
-            onCollisionEnter={handleCollisionEnter}
-            jumpForceToGroundMult={0}
-            slopJumpMult={0}
-            autoBalanceSpringK={1}
-            // onIntersectionEnter={handleIntersectionEnter}
-            // onIntersectionExit={handleIntersectionExit}
-          >
+      <group>
+        <Ecctrl
+          name="player"
+          ref={refPlayer}
+          characterInitDir={Math.PI}
+          disableFollowCam={true}
+          disableFollowCamPos={{ x: 0, y: 15, z: -15 }}
+          capsuleHalfHeight={0.5}
+          capsuleRadius={0.3}
+          floatHeight={0}
+          autoBalanceSpringOnY={1}
+          maxVelLimit={3}
+          jumpVel={5}
+          onCollisionEnter={handleCollisionEnter}
+          jumpForceToGroundMult={0}
+          slopJumpMult={0}
+          autoBalanceSpringK={1}
+          // onIntersectionEnter={handleIntersectionEnter}
+          // onIntersectionExit={handleIntersectionExit}
+        >
+          <group>
             <primitive
               ref={refModel}
-              object={vrm.scene}
+              object={onLoadVRM.scene}
               position={[0, -0.75, 0]}
-              rotation={[0, Math.PI, 0]}
+                rotation={[0, Math.PI, 0]}
             />
-            <Html center style={{ color: 'white' }} position={[0, 1.2, 0]}>
-              {/* <div className="bg-white text-black text-center text-xs">
-                <p>HP: {playerHp}</p>
-              </div> */}
-              <div className="bg-black text-white w-[100px] h-[10px] border-solid border-white border-2 z-0">
-                <div className={`flex justify-center items-center h-full ${updateHpBar()}`} style={{width: `${playerHp}%`}} />
-              </div>
-            </Html>
-            {/* {isPickup && (
-              <Html center style={{ color: 'white' }} position={[0, -1.4, 0]}>
-                <div className=" text-white text-center text-sm w-[80px] rounded-md py-1 flex justify-center items-center gap-2">
-                  <div className="bg-white text-black text-center text-sm w-[25px] h-[25px] rounded-md py-1 flex justify-center items-center">
-                    F
-                  </div>
-                  <p>調べる</p>
-                </div>
-              </Html>
-            )} */}
-          </Ecctrl>
-        </group>
-      ) : (
-        <Html center style={{ color: 'white' }}>{progress}</Html>
-      )}
+            {/* <mesh ref={refShadow} position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+              <planeGeometry args={[1, 1]} />
+              <meshStandardMaterial map={shadowTexture} transparent opacity={1} />
+            </mesh> */}
+          </group>
+          <Html center style={{ color: 'white' }} position={[0, 1.2, 0]}>
+
+            {/* <div className="bg-white text-black text-center text-xs">
+              <p>HP: {playerHp}</p>
+            </div> */}
+            <div className="bg-black text-white w-[100px] h-[10px] border-solid border-white border-2 z-0">
+              <div className={`flex justify-center items-center h-full ${updateHpBar()}`} style={{width: `${playerHp}%`}} />
+            </div>
+          </Html>
+        </Ecctrl>
+      </group>
     </>
   );
 }

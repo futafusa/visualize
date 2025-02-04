@@ -21,7 +21,7 @@ export default [
     route("sampleBufferGeometry", "./routes/visual/sampleBufferGeometry.tsx"),
     route("sampleShaderNoise", "./routes/visual/sampleShaderNoise.tsx"),
     route("studyGlsl", "./routes/visual/studyGlsl.tsx"),
-    route("customShaderMaterial", "./routes/visual/sampleCustomShader.tsx"),
+    route("sampleCustomShader", "./routes/visual/sampleCustomShader.tsx"),
     route("gamingTopdownView", "./routes/visual/gamingTopdownView.tsx"),
     route("effectTest", "./routes/visual/effectTest.tsx"),
     route("sampleVrm", "./routes/visual/sampleVrm.tsx"),

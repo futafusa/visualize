@@ -9,7 +9,7 @@ import fragmentShader from "../../shaders/wobble/fragment.glsl";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 function CustomShaderObject() {
-  const {metalness, roughness, color, transmission, ior, thickness, transparent, wireframe} = useControls('Material', {
+  const {metalness, roughness, color, transmission, ior, thickness, wireframe} = useControls('Material', {
     metalness: {value: 0, min: 0, max: 1, step: 0.01},
     roughness: {value: 0.5, min: 0, max: 1, step: 0.01},
     color: '#ffffff',

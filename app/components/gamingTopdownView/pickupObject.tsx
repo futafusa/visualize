@@ -15,6 +15,8 @@ export default function PickupObject(
 ) {
   const [isPlayerEnter, setIsPlayerEnter] = useState<boolean>(false);
   const [showMessage, setShowMessage] = useState<boolean>(false);
+  const [isMessageToggled, setIsMessageToggled] = useState<boolean>(false);
+  const [prevPickupState, setPrevPickupState] = useState<boolean>(false);
   const [_, getKeys] = useKeyboardControls();
 
   const handleIntersectionEnter = (event: any) => {
@@ -30,16 +32,19 @@ export default function PickupObject(
 
     if(colliderOther?.name === 'player') {
       setIsPlayerEnter(false);
+      setIsMessageToggled(false);
+      setPrevPickupState(false);
     }
   }
 
   useFrame(() => {
     const { pickup } = getKeys();
-    if(pickup) {
-      setShowMessage(true);
-    } else {
-      setShowMessage(false);
+    
+    if (pickup && !prevPickupState && isPlayerEnter) {
+      setIsMessageToggled(prev => !prev);
     }
+    setPrevPickupState(pickup);
+    setShowMessage(isMessageToggled);
   })
 
   return (
