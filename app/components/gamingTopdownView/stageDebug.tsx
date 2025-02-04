@@ -26,7 +26,7 @@ export default function stageDebug() {
       {/* FLOOR */}
       <Grid args={[20, 20]}  />
       <RigidBody name="floor" type="fixed" position={[0, -0.1, 0]}>
-        <mesh position={[0, 0, 0]} rotation={[Math.PI / -2, 0, 0]}>
+        <mesh position={[0, 0, 0]} rotation={[Math.PI / -2, 0, 0]} receiveShadow>
         <boxGeometry args={[20, 20, 0.1]} />
         <meshStandardMaterial color={'#000000'} />
         </mesh>

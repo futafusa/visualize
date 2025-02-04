@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Grid } from "@react-three/drei";
+import { Grid, useTexture } from "@react-three/drei";
 import { RigidBody, type RapierRigidBody } from "@react-three/rapier";
 
 export default function FloorBasic(props: {
@@ -12,6 +12,7 @@ export default function FloorBasic(props: {
   moveLift?: boolean
 }) {
   const refFloor = useRef<RapierRigidBody>(null)!;
+  const floorTexture = useTexture('/images/textures/grid128.png');
   
   useFrame((state) => {
     const move = Math.sin(state.clock.getElapsedTime()) * 2;
@@ -35,8 +36,8 @@ export default function FloorBasic(props: {
         rotation={[0, Math.PI - Math.PI / 4, 0]}
       >
         <mesh>
-          <boxGeometry args={[props.size[0], 0.1, props.size[1]]} />
-          <meshStandardMaterial color={props.color} />
+          <boxGeometry args={[props.size[0], 0.2, props.size[1]]} />
+          <meshStandardMaterial map={floorTexture} />
         </mesh>
       </RigidBody>
     </group>

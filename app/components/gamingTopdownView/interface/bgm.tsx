@@ -8,7 +8,7 @@ export default function Bgm() {
   const audio = refAudio.current;
   if (!audio) return;
 
-  audio.volume = 0.4;
+  audio.volume = 0.3;
   audio.loop = true;
 
   if (isPlay) {
@@ -44,8 +44,8 @@ export default function Bgm() {
           `}
           onClick={() => setIsPlay(!isPlay)}
         >
-          <div className={`text-lg ${isPlay ? 'i-ic-round-volume-up text-black' : 'i-ic-round-volume-off text-white'}`}></div>
-          <div className={`text-sm ${isPlay ? 'text-black' : 'text-white'}`}>BGM</div>
+          <div className={`text-lg ${isPlay ? 'i-ic-round-volume-up text-black' : 'i-ic-round-volume-off text-black'}`}></div>
+          <div className={`text-sm ${isPlay ? 'text-black' : 'text-black'}`}>BGM</div>
         </button>
         <audio ref={refAudio} src="/audio/echo.mp3" />
       </div>
