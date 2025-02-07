@@ -9,7 +9,7 @@ export default function PreRenderMovie() {
       tags: ['Houdini', 'Vellum', 'Karma']
     },
     {
-      path: '/movie/light_sample007c.mp4',
+      path: '/movie/light_sample003b.mp4',
       tags: ['Houdini','Lighting', 'Karma']
     },
     {
