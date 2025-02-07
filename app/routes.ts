@@ -25,5 +25,7 @@ export default [
     route("gamingTopdownView", "./routes/visual/gamingTopdownView.tsx"),
     route("effectTest", "./routes/visual/effectTest.tsx"),
     route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
+    route("preRenderMovie", "./routes/visual/preRenderMovie.tsx"),
+    route("preRenderImage", "./routes/visual/preRenderImage.tsx"),
   ]),
 ] satisfies RouteConfig;

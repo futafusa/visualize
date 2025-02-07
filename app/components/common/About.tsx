@@ -49,7 +49,7 @@ export default function About() {
         </div>
         <div className="sm:w-3/5">
           <p className="text-slate-500">
-            This site is a repository of visual expression ideas mainly using Three.js.
+            This site is a repository of visual expression ideas mainly using Three.js and Houdini.
           </p>
         </div>
       </div>
