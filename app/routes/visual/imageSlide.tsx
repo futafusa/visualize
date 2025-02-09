@@ -57,7 +57,7 @@ export default function ImageSlide() {
 
   return (
     <>
-      <AudioInput />
+      {/* <AudioInput /> */}
       <Canvas
         shadows
         camera={{

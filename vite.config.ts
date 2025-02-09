@@ -3,18 +3,18 @@ import autoprefixer from "autoprefixer";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import glsl from "vite-plugin-glsl";
-import tailwindcss from "@tailwindcss/vite"
+import tailwindcss from "tailwindcss";
 
 export default defineConfig({
-  // css: {
-  //   postcss: {
-  //     plugins: [
-  //       autoprefixer
-  //     ],
-  //   },
-  // },
+  css: {
+    postcss: {
+      plugins: [
+        tailwindcss,
+        autoprefixer
+      ],
+    },
+  },
   plugins: [
-    tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
     glsl(),
