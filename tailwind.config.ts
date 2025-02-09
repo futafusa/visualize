@@ -21,9 +21,7 @@ export default {
   },
   plugins: [
     iconsPlugin({
-      collections: getIconCollections([
-        'ic',
-      ]),
+      collections: getIconCollections(['ic']),
     }),
   ],
 } satisfies Config;

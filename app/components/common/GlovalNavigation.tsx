@@ -18,6 +18,7 @@ export default function GlovalNavigation() {
           hover:bg-black
           hover:text-white
         "
+        viewTransition
       >
         <span className="i-ic-round-arrow-back-ios" />
         back

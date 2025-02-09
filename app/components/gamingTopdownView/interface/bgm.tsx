@@ -1,8 +1,13 @@
 import { useRef, useState, useEffect } from "react";
+import { useControls } from "leva";
 
 export default function Bgm() {
+  const { isBGM } = useControls('BGM', {
+    isBGM: false,
+  })
+
   const refAudio = useRef<HTMLAudioElement>(null);
-  const [isPlay, setIsPlay] = useState<boolean>(false);
+  // const [isPlay, setIsPlay] = useState<boolean>(false);
 
  useEffect(() => {
   const audio = refAudio.current;
@@ -11,7 +16,7 @@ export default function Bgm() {
   audio.volume = 0.3;
   audio.loop = true;
 
-  if (isPlay) {
+  if (isBGM) {
     audio.currentTime = 0;
     audio.play().catch(console.error);
   } else {
@@ -21,32 +26,34 @@ export default function Bgm() {
   return () => {
     audio.pause();
   }
- }, [isPlay]);
+ }, [isBGM]);
 
   return (
     <>
       <div className="fixed top-20 left-8 z-10">
-        <button 
+        {/* <button 
           className={`
-            text-black 
-            bg-white
+            text-sm
+            py-2 px-3
+            flex justify-center items-center gap-2
             rounded-lg
-            py-2
-            px-3
-            flex
-            justify-center
-            items-center
-            gap-2
-            border-2
-            border-white
-            drop-shadow-md 
-            ${isPlay ? 'bg-white' : 'bg-transparent'}
+            drop-shadow-md
+            ${isBGM ? 'bg-black' : 'bg-white'}
+            ${isBGM ? 'text-white' : 'text-black'}
+
+            hover:bg-black
+            hover:text-white
           `}
-          onClick={() => setIsPlay(!isPlay)}
+          onClick={() => setIsBGM(!isBGM)}
         >
-          <div className={`text-lg ${isPlay ? 'i-ic-round-volume-up text-black' : 'i-ic-round-volume-off text-black'}`}></div>
-          <div className={`text-sm ${isPlay ? 'text-black' : 'text-black'}`}>BGM</div>
-        </button>
+          <span className={`
+            text-lg
+            ${isBGM ? 'i-ic-round-volume-up' : 'i-ic-round-volume-off'}
+          `}>       
+          </span>
+          BGM
+
+        </button> */}
         <audio ref={refAudio} src="/audio/echo.mp3" />
       </div>
     </>

@@ -38,7 +38,7 @@ export default function PreRenderImage() {
         <ul className="columns-1 sm:columns-2 gap-8 space-y-8">
           {imageList.map((image, index) => (
             <li key={index} className="mb-4 relative">
-              <img src={image.path} alt={image.path} />
+              <img src={image.path} alt={image.path} loading="lazy" />
               <ul className="flex flex-wrap gap-2 mt-2 absolute top-2 left-4">
                 {image.tags.map((tag, index) => (
                   <li key={index} className="text-sm text-black bg-white/80 px-2 py-1">
