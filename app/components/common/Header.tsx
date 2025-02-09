@@ -24,7 +24,7 @@ export default function Header() {
             className={`hover:underline flex items-center gap-0`}
           >
             About
-            <span className={`i-ic-baseline-keyboard-arrow-down w-5 h-5 ${isAbout ? 'rotate-180' : ''}`} />
+            {/* <span className={`i-ic-baseline-keyboard-arrow-down w-5 h-5 ${isAbout ? 'rotate-180' : ''}`} /> */}
           </button>
         </div>
       </div>

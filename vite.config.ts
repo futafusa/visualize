@@ -1,22 +1,22 @@
 import { reactRouter } from "@react-router/dev/vite";
 import autoprefixer from "autoprefixer";
-import tailwindcss from "tailwindcss";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import glsl from "vite-plugin-glsl";
+import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
-  css: {
-    postcss: {
-      plugins: [
-        tailwindcss,
-        autoprefixer
-      ],
-    },
-  },
+  // css: {
+  //   postcss: {
+  //     plugins: [
+  //       autoprefixer
+  //     ],
+  //   },
+  // },
   plugins: [
+    tailwindcss(),
     reactRouter(),
     tsconfigPaths(),
-    glsl()
+    glsl(),
   ],
 });

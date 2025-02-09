@@ -37,15 +37,17 @@ export default function Bgm() {
             justify-center
             items-center
             gap-2
-            border-2
-            border-white
             drop-shadow-md 
             ${isPlay ? 'bg-white' : 'bg-transparent'}
+            hover:bg-black
+            hover:text-white
+            group
+            relative
           `}
           onClick={() => setIsPlay(!isPlay)}
         >
-          <div className={`text-lg ${isPlay ? 'i-ic-round-volume-up text-black' : 'i-ic-round-volume-off text-black'}`}></div>
-          <div className={`text-sm ${isPlay ? 'text-black' : 'text-black'}`}>BGM</div>
+          {/* <div className={`text-lg ${isPlay ? 'i-ic-round-volume-up group-hover:text-white' : 'i-ic-round-volume-off group-hover:text-white'}`}></div> */}
+          <div className={`text-sm ${isPlay ? 'group-hover:text-white' : 'group-hover:text-white'}`}>BGM</div>
         </button>
         <audio ref={refAudio} src="/audio/echo.mp3" />
       </div>

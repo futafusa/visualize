@@ -1,10 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin '@egoist/tailwindcss-icons';
 
 html,
 body {
   @apply bg-slate-200 w-full h-full text-slate-800;
-
 }
+
 
