@@ -27,5 +27,6 @@ export default [
     route("sampleVrm", "./routes/visual/sampleVrm.tsx"),
     route("preRenderMovie", "./routes/visual/preRenderMovie.tsx"),
     route("preRenderImage", "./routes/visual/preRenderImage.tsx"),
+    route("raycasterUV", "./routes/visual/raycasterUV.tsx"),
   ]),
 ] satisfies RouteConfig;

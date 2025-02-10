@@ -9,10 +9,17 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/raycasterUV',
+    label: 'Raycaster UV',
+    thumbnail: '/images/thumbnails/raycasterUV.png',
+    tags: ['Three.js', 'Raycaster']
+  },
+  {
     path: '/visual/gamingTopdownView',
     label: 'Gaming Top-down View',
     thumbnail: '/images/thumbnails/gamingTopdownView.png',
-    tags: ['WIP', 'Game']
+    tags: ['Game']
+
   },
   {
     path: '/visual/sampleVrm',

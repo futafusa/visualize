@@ -103,7 +103,7 @@ export default function Base() {
           <Vignette offset={0.4} darkness={0.6}/>
         </EffectComposer>
 
-        <Physics debug={true}>
+        <Physics debug={false}>
           {/* <Player cameraControls={cameraControls} /> */}
           {vrm && <PlayerVrm cameraControls={cameraControls} onLoadVRM={vrm} />}
           
