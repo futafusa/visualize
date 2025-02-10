@@ -74,6 +74,8 @@ export default function Base() {
     <KeyboardControls
       map={keyboardMap}
     >
+      <Interface />
+      <Bgm />
       <Canvas
         camera={{ fov: 20, near: 0.1, far: 200, position: [0, 15, -15] }}
         gl={{toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.0}}
@@ -101,7 +103,7 @@ export default function Base() {
           <Vignette offset={0.4} darkness={0.6}/>
         </EffectComposer>
 
-        <Physics debug={true}>
+        <Physics debug={false}>
           {/* <Player cameraControls={cameraControls} /> */}
           {vrm && <PlayerVrm cameraControls={cameraControls} onLoadVRM={vrm} />}
           
@@ -113,8 +115,6 @@ export default function Base() {
           position={[0, 0, 0]}
         /> */}
       </Canvas>
-      <Interface />
-      <Bgm />
       <DropVRM progress={progress} loadVRM={loadVRM} />
     </KeyboardControls>
   );

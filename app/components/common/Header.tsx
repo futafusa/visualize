@@ -18,15 +18,13 @@ export default function Header() {
         <h1>
           Audio/Visual/Reactive
         </h1>
-        <div>
-          <button
-            onClick={clickAbout}
-            className={`hover:underline flex items-center gap-0`}
-          >
-            About
-            <span className={`i-ic-baseline-keyboard-arrow-down w-5 h-5 ${isAbout ? 'rotate-180' : ''}`} />
-          </button>
-        </div>
+        <button
+          onClick={clickAbout}
+          className={`hover:underline flex items-center gap-0`}
+        >
+          About
+          <span className={`i-ic-baseline-keyboard-arrow-down w-5 h-5 ${isAbout ? 'rotate-180' : ''}`} />
+        </button>
       </div>
       {isAbout && (
         <About />

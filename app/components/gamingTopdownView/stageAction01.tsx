@@ -10,7 +10,7 @@ export default function stageAction01() {
       <FloorBasic position={[0, 0, 0]} size={[4, 4]} color={'#222222'} />
       <FloorBasic position={[-3, 0, 3]} size={[2.5, 2.5]} color={'#222222'} moveSlide={true} />
       <FloorBasic position={[-6, 0, 6]} size={[4, 4]} color={'#222222'} />
-      {/* <DamageObject position={new THREE.Vector3(-6, 0, 6)} size={[2.5, 0.2, 2.5]} color={'#ff0000'} rotation={[0, Math.PI - Math.PI / 4, 0]}/> */}
+      <DamageObject position={new THREE.Vector3(-6, 0, 6)} size={[2, 0.3, 2]} color={'#ff0000'} rotation={[0, Math.PI - Math.PI / 4, 0]}/>
       <FloorBasic position={[-9, 0, 9]} size={[2.5, 2.5]} color={'#222222'} moveLift={true} />
       <FloorBasic position={[-12, 2, 12]} size={[4, 4]} color={'#222222'} />
       <PickupObject position={new THREE.Vector3(-12, 2.5, 12)} size={[0.2, 0.2, 0.2]} color={'#00ff00'} rotation={[0, Math.PI - Math.PI / 4, 0]}>

@@ -9,10 +9,17 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/raycasterUV',
+    label: 'Raycaster UV',
+    thumbnail: '/images/thumbnails/raycasterUV.png',
+    tags: ['Three.js', 'Raycaster']
+  },
+  {
     path: '/visual/gamingTopdownView',
     label: 'Gaming Top-down View',
     thumbnail: '/images/thumbnails/gamingTopdownView.png',
-    tags: ['WIP', 'Game']
+    tags: ['Game']
+
   },
   {
     path: '/visual/sampleVrm',
@@ -20,7 +27,6 @@ const navigationItems = [
     thumbnail: '/images/thumbnails/sampleVrm.png',
     tags: ['Three.js', 'VRM']
   },
-
   {
     path: '/visual/effectTest',
     label: 'Effect Test',
@@ -33,16 +39,12 @@ const navigationItems = [
     thumbnail: '/images/thumbnails/manyCircle.png',
     tags: ['Three.js', 'Audio']
   },
-
   {
     path: '/visual/studyGlsl',
     label: 'study GLSL',
     thumbnail: '/images/thumbnails/studyGlsl.png',
     tags: ['Three.js', 'GLSL']
   },
- 
-
-
   {
     path: '/visual/imageSlide',
     label: 'Custom Slide Image',
@@ -68,7 +70,6 @@ const navigationItems = [
     thumbnail: '/images/thumbnails/sampleBufferGeometry.png',
     tags: ['Three.js']
   },
-
   {
     path: '/visual/sampleAudio',
     label: 'Sample Audio Input',
@@ -89,9 +90,6 @@ const navigationItems = [
   }
 ]
 
-
-
-
 export function Navigation() {
   // const navItems = getVisualRoutes(routes).reverse();
 
@@ -101,7 +99,7 @@ export function Navigation() {
         <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4 md:gap-8">
           {navigationItems.map((item, index) => (
             <li className="" key={index}>
-              <Link to={item.path} className="hover:opacity-80">
+              <Link to={item.path} className="hover:opacity-80" viewTransition>
                 <div className="w-full h-24 bg-gray-400 overflow-hidden relative">
                   <img src={item.thumbnail} alt={item.label} className="w-full h-full object-cover" />
                   <ul className="absolute bottom-2 left-2 flex flex-wrap gap-2">
