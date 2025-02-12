@@ -16,7 +16,7 @@ export default function Header() {
     <header>
       <div className="flex justify-between items-center pb-8">
         <h1>
-          Audio/Visual/Reactive
+          audio/visual/reactive
         </h1>
         <button
           onClick={clickAbout}

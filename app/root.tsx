@@ -67,8 +67,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Audio/Visual/Reactive" },
-    { name: "description", content: "Audio/Visual/Reactive" },
+    { title: "audio/visual/reactive" },
+    { name: "description", content: "audio/visual/reactive" },
+    { property: "og:title", content: "audio/visual/reactive" },
+    { property: "og:description", content: "audio/visual/reactive" },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://audiovisualreactive.com/" },
+    { property: "og:image", content: "https://audiovisualreactive.com/images/ogp.png" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:title", content: "audio/visual/reactive" },
+    { name: "twitter:description", content: "audio/visual/reactive" },
+    { name: "twitter:image", content: "https://audiovisualreactive.com/images/ogp.png" },
   ];
 }
 
