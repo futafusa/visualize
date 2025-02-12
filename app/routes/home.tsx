@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
-import { Navigation } from "../components/home/Navigation";
+import { Navigation } from "../components/common/Navigation";
 import Header from "../components/common/Header";
 export default function Home() {
   return (
