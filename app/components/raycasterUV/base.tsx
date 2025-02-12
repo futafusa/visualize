@@ -33,7 +33,7 @@ export default function Base() {
   return (
     <KeyboardControls map={keyboardMap}>
       <Canvas
-          camera={{ fov: 20, near: 0.1, far: 200, position: [0, 10, -15] }}
+          camera={{ fov: 20, near: 0.1, far: 200, position: [0, 10, 15] }}
           gl={{toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.0}}
           style={{background: '#000000'}}
         >

@@ -30,10 +30,27 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+export function GA() {
+  return (
+    <>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-X1JDKGH2N5"></script>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-X1JDKGH2N5');
+        `
+      }} />
+    </>
+  )
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ja">
       <head>
+        <GA />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />

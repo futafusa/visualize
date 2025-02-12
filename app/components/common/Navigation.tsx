@@ -9,6 +9,12 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/customPostProcessing',
+    label: 'Custom Post Processing',
+    thumbnail: '/images/thumbnails/raycasterUV.png',
+    tags: ['WIP']
+  },
+  {
     path: '/visual/raycasterUV',
     label: 'Raycaster UV',
     thumbnail: '/images/thumbnails/raycasterUV.png',
@@ -87,7 +93,7 @@ const navigationItems = [
     label: 'Prerender Image',
     thumbnail: '/images/thumbnails/preRenderImage.png',
     tags: ['Houdini']
-  }
+  },
 ]
 
 export function Navigation() {
@@ -98,10 +104,16 @@ export function Navigation() {
       <nav>
         <ul className="grid grid-cols-2 gap-4 lg:grid-cols-4 md:gap-8">
           {navigationItems.map((item, index) => (
-            <li className="" key={index}>
-              <Link to={item.path} className="hover:opacity-80" viewTransition>
+            <li
+              key={index}
+              className={`${item.tags.includes('WIP') ? 'opacity-30' : ''}`}
+            >
+              <Link to={item.path} className="group" viewTransition>
                 <div className="w-full h-24 bg-gray-400 overflow-hidden relative">
-                  <img src={item.thumbnail} alt={item.label} className="w-full h-full object-cover" />
+                  <img
+                    src={item.thumbnail} alt={item.label}
+                    className="w-full h-full object-cover group-hover:sepia group-hover:scale-105 transition-all duration-300"
+                  />
                   <ul className="absolute bottom-2 left-2 flex flex-wrap gap-2">
                     {item.tags.map((tag, index) => (
                       <li key={index} className="text-xs text-black bg-white/80 px-1">{tag}</li>
