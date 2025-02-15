@@ -1,6 +1,6 @@
 import type { Route } from "./+types/home";
 import { Link } from "react-router";
-import { Navigation } from "../components/common/Navigation";
+import { HomeNavigation } from "../components/common/homeNavigation";
 import Header from "../components/common/Header";
 export default function Home() {
   return (
@@ -8,7 +8,7 @@ export default function Home() {
       <div className="px-4 py-4 md:px-8 sm:py-8">
         <Header />
         <main>
-          <Navigation />
+          <HomeNavigation />
         </main>
       </div>
     </>

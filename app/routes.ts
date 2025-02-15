@@ -29,5 +29,6 @@ export default [
     route("preRenderImage", "./routes/visual/preRenderImage.tsx"),
     route("raycasterUV", "./routes/visual/raycasterUV.tsx"),
     route("customPostProcessing", "./routes/visual/customPostProcessing.tsx"),
+    route("renderTarget", "./routes/visual/renderTarget.tsx"),
   ]),
 ] satisfies RouteConfig;
