@@ -11,8 +11,14 @@ const navigationItems = [
   {
     path: '/visual/customPostProcessing',
     label: 'Custom Post Processing',
-    thumbnail: '/images/thumbnails/raycasterUV.png',
+    thumbnail: '/images/thumbnails/customPostProcessing.png',
     tags: ['WIP']
+  },
+  {
+    path: '/visual/renderTarget',
+    label: 'Render Target',
+    thumbnail: '/images/thumbnails/renderTarget.png',
+    tags: ['Three.js', 'Render Target']
   },
   {
     path: '/visual/raycasterUV',
@@ -24,7 +30,7 @@ const navigationItems = [
     path: '/visual/gamingTopdownView',
     label: 'Gaming Top-down View',
     thumbnail: '/images/thumbnails/gamingTopdownView.png',
-    tags: ['Game']
+    tags: ['Three.js','Game']
 
   },
   {
@@ -96,7 +102,7 @@ const navigationItems = [
   },
 ]
 
-export function Navigation() {
+export function HomeNavigation() {
   // const navItems = getVisualRoutes(routes).reverse();
 
   return (
@@ -106,13 +112,18 @@ export function Navigation() {
           {navigationItems.map((item, index) => (
             <li
               key={index}
-              className={`${item.tags.includes('WIP') ? 'opacity-30' : ''}`}
+              className={`${item.tags.includes('WIP') && 'bg-orange-600'}`}
             >
               <Link to={item.path} className="group" viewTransition>
-                <div className="w-full h-24 bg-gray-400 overflow-hidden relative">
+                <div className="w-full h-24 overflow-hidden relative">
                   <img
                     src={item.thumbnail} alt={item.label}
-                    className="w-full h-full object-cover group-hover:sepia group-hover:scale-105 transition-all duration-300"
+                    className={`
+                      w-full h-full object-cover 
+                      group-hover:sepia group-hover:scale-105
+                      transition-all duration-300
+                      ${item.tags.includes('WIP') && 'opacity-20'}
+                    `}
                   />
                   <ul className="absolute bottom-2 left-2 flex flex-wrap gap-2">
                     {item.tags.map((tag, index) => (
