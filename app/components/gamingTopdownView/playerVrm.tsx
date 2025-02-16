@@ -5,9 +5,9 @@ import { Html, Shadow, type ShadowType } from "@react-three/drei";
 import { type VRM } from '@pixiv/three-vrm';
 import { loadMixamoAnimation } from '../../components/common/loadMixamoAnimation';
 import { useControls } from "leva";
-import { useKeyboardControls, useTexture } from "@react-three/drei";
 import { RigidBody, type RapierRigidBody, CapsuleCollider, useRapier, CollisionEnterPayload } from "@react-three/rapier";
-import Ecctrl, { EcctrlAnimation, type CustomEcctrlRigidBody } from "ecctrl";
+import { useKeyboardControls, useTexture } from "@react-three/drei";
+import Ecctrl, { EcctrlAnimation, type CustomEcctrlRigidBody, useJoystickControls } from "ecctrl";
 
 export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControls: boolean, onLoadVRM: VRM }) {
   const [AnimationMixer, setAnimationMixer] = useState<THREE.AnimationMixer | null>(null);
@@ -19,7 +19,6 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
   const [subscribeKeys, getKeys] = useKeyboardControls();
   const [isJump, setIsJump] = useState<boolean>(false);
   const { rapier, world } = useRapier();
-
   const [smoothCameraPosition] = useState(() => new THREE.Vector3(20, 20, 20));
   const [smoothCameraTarget] = useState(() => new THREE.Vector3());
 
@@ -33,6 +32,7 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
   };
 
   const [selectAnimation, setSelectAnimation] = useState<string>('idle');
+  const joystickAng = useJoystickControls((state) => state.curJoystickAng);
 
   // アニメーションの読み込み
   useEffect(() => {
@@ -196,7 +196,7 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
     const isPlayerMove = forward || backward || leftward || rightward;
     if(isJump) {
       setSelectAnimation('jump');
-    } else if(isPlayerMove) {
+    } else if(isPlayerMove || joystickAng > 0) {
       setSelectAnimation('run');
     } else {
       setSelectAnimation('idle');

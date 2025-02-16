@@ -4,8 +4,9 @@ import { CameraControls, useTexture } from "@react-three/drei";
 import { EffectComposer, Bloom, Pixelation, Sepia } from "@react-three/postprocessing";
 import { useControls } from "leva";
 import { useRef } from "react";
-import { CustomEffectEdge } from "./CustomEffectEdge";
 import { Perf } from "r3f-perf";
+import { CustomEffectEdge } from "./CustomEffectEdge";
+import { CustomEffectPixel } from "./CustomEffectPixel";
 
 export default function Base() {
   const { isPerf } = useControls('Debug', {
@@ -28,7 +29,7 @@ function Scene() {
   const { normalEdgeStrength, depthEdgeStrength, pixelSize, sepia } = useControls('CustomEffectEdge', {
     normalEdgeStrength: {value: 1.0, min: 0.0, max: 20.0, step: 0.1},
     depthEdgeStrength: {value: 0.5, min: 0.0, max: 10.0, step: 0.1},
-    pixelSize: {value: 8, min: 0, max: 32, step: 1},
+    pixelSize: {value: 8, min: 4, max: 32, step: 1},
     sepia: {value: 0.3, min: 0.0, max: 1.0, step: 0.1},
   })
 
@@ -37,11 +38,8 @@ function Scene() {
       <CameraControls />
 
       <EffectComposer>
-        <CustomEffectEdge
-          normalEdgeStrength={normalEdgeStrength}
-          depthEdgeStrength={depthEdgeStrength}
-        />
-        <Pixelation granularity={pixelSize} />
+        <CustomEffectEdge normalEdgeStrength={normalEdgeStrength} depthEdgeStrength={depthEdgeStrength} />
+        <CustomEffectPixel pixelSize={pixelSize} />
         <Sepia intensity={sepia} />
       </EffectComposer>
     
@@ -74,7 +72,7 @@ function Objects(props: any) {
     </mesh>
     <mesh position={[-1, 0.5, 0]} castShadow>
       <boxGeometry args={[1, 1, 1]} />
-      <meshPhongMaterial color={'#0000ff'} specular={'#ffffff'} shininess={100} />
+      <meshStandardMaterial color={'#0000ff'} />
     </mesh>
 
     {/* FLOOR */}

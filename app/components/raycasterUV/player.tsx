@@ -20,6 +20,7 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
   // global state
   const setCurrentUV = useGameStore((state) => state.setCurrentUV);
   const isCollisionArea = useGameStore((state) => state.isCollisionArea);
+  const isInterfaceTouch = useGameStore((state) => state.isInterfaceTouch);
 
   const playerMaterial = new CustomShaderMaterial({
     baseMaterial: THREE.MeshStandardMaterial,
@@ -86,20 +87,20 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
     }
   }
 
-  useEffect(() => {
-    const unsubscribePlayerJump = subscribeKeys((state) => {
+  // useEffect(() => {
+  //   const unsubscribePlayerJump = subscribeKeys((state) => {
 
-      return state.jump;
-    }, (value) => {
-      if(value) {
-        playerJump();
-      }
-    });
+  //     return state.jump;
+  //   }, (value) => {
+  //     if(value) {
+  //       playerJump();
+  //     }
+  //   });
 
-    return () => {
-      unsubscribePlayerJump();
-    }
-  }, []);
+  //   return () => {
+  //     unsubscribePlayerJump();
+  //   }
+  // }, []);
 
   const { scene } = useThree();
   const rayCaster = new THREE.Raycaster();
@@ -115,7 +116,7 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
       if (intersects.length > 0) {
         const intersection = intersects[0];
         if (intersection.uv) {
-          console.log(intersection.uv.x);
+          // console.log(intersection.uv.x);
           setCurrentUV(intersection.uv);
         }
       }
@@ -137,11 +138,11 @@ export default function Player({ cameraControls }: { cameraControls: boolean }) 
     //   impulse.z -= impluseStrength;
     //   torque.x -= torqueStrength;
     // }
-    if(leftward) {
+    if(leftward || isInterfaceTouch.leftward) {
       impulse.x += impluseStrength;
       torque.z -= torqueStrength;
     }
-    if(rightward) {
+    if(rightward || isInterfaceTouch.rightward) {
       impulse.x -= impluseStrength;
       torque.z += torqueStrength;
     }
