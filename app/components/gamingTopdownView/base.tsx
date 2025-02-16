@@ -74,8 +74,6 @@ export default function Base() {
     <KeyboardControls
       map={keyboardMap}
     >
-      <Interface />
-      <Bgm />
       <Canvas
         camera={{ fov: 20, near: 0.1, far: 200, position: [0, 15, -15] }}
         gl={{toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.0}}
@@ -116,6 +114,8 @@ export default function Base() {
         /> */}
       </Canvas>
       <DropVRM progress={progress} loadVRM={loadVRM} />
+      <Interface />
+      <Bgm />
     </KeyboardControls>
   );
 }

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { Canvas, useFrame, extend, useThree } from "@react-three/fiber";
 import { CameraControls, useTexture } from "@react-three/drei";
-import { EffectComposer, Bloom, Pixelation } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Pixelation, Sepia } from "@react-three/postprocessing";
 import { useControls } from "leva";
 import { useRef } from "react";
 import { CustomEffectEdge } from "./CustomEffectEdge";
@@ -25,55 +25,62 @@ export default function Base() {
 }
 
 function Scene() {
-  const { normalEdgeStrength, depthEdgeStrength, pixelSize } = useControls('CustomEffectEdge', {
+  const { normalEdgeStrength, depthEdgeStrength, pixelSize, sepia } = useControls('CustomEffectEdge', {
     normalEdgeStrength: {value: 1.0, min: 0.0, max: 20.0, step: 0.1},
     depthEdgeStrength: {value: 0.5, min: 0.0, max: 10.0, step: 0.1},
     pixelSize: {value: 8, min: 0, max: 32, step: 1},
+    sepia: {value: 0.3, min: 0.0, max: 1.0, step: 0.1},
   })
-
-  const texFloor = useTexture('/images/textures/tile64.png')
 
   return (
     <>
       <CameraControls />
 
       <EffectComposer>
-        <CustomEffectEdge normalEdgeStrength={normalEdgeStrength} depthEdgeStrength={depthEdgeStrength} />
+        <CustomEffectEdge
+          normalEdgeStrength={normalEdgeStrength}
+          depthEdgeStrength={depthEdgeStrength}
+        />
         <Pixelation granularity={pixelSize} />
+        <Sepia intensity={sepia} />
       </EffectComposer>
     
       {/* LIGHT */}
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={1} />
       <directionalLight position={[1, 1, 1]} intensity={2} castShadow />
 
       {/* OBJECTS */}
-      <Fuwafuwa position={[1, 1, 0]} />
-      <mesh position={[-1, 0.5, 0]} castShadow>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={'#0000ff'} roughness={0.5} metalness={0} flatShading />
-      </mesh>
-      <mesh position={[0, -0, 0]} rotation-x={-Math.PI / 2} castShadow receiveShadow>
-        <planeGeometry args={[5, 5]} />
-        <meshStandardMaterial color={'#ffffff'} roughness={0.5} metalness={0} map={texFloor} />
-      </mesh>
+      <Objects />
     </>
   )
 }
 
-function Fuwafuwa(props: any) {
+function Objects(props: any) {
   const refObject = useRef<THREE.Mesh>(null)!;
+  const texFloor = useTexture('/images/textures/tile64.png')
 
   useFrame(() => {
-    refObject.current!.rotation.y += 0.01
-    refObject.current!.rotation.z += 0.01
-    refObject.current!.position.y = props.position[1] + Math.sin(refObject.current!.rotation.y) * 0.5
+    if (!refObject.current) return;
+    refObject.current.rotation.y += 0.01
+    refObject.current.rotation.z += 0.01
+    refObject.current.position.y = 1 + Math.sin(refObject.current!.rotation.y) * 0.5
   })
 
   return (
    <>
-    <mesh ref={refObject} {...props} castShadow>
-      <coneGeometry args={[0.5, 0.7, 4]} />
-      <meshStandardMaterial color={'#ff0000'} roughness={0.5} metalness={0} flatShading />
+    <mesh ref={refObject} position={[1, 1, 0]} castShadow>
+      <icosahedronGeometry args={[0.5, 0]} /> 
+      <meshPhongMaterial color={'#ff0000'} specular={'#ffffff'} shininess={100} />
+    </mesh>
+    <mesh position={[-1, 0.5, 0]} castShadow>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshPhongMaterial color={'#0000ff'} specular={'#ffffff'} shininess={100} />
+    </mesh>
+
+    {/* FLOOR */}
+    <mesh position={[0, -0, 0]} rotation-x={-Math.PI / 2} castShadow receiveShadow>
+      <planeGeometry args={[5, 5]} />
+      <meshPhongMaterial color={'#ffffff'} map={texFloor} />
     </mesh>
    </>
   )
