@@ -150,7 +150,9 @@ type CustomEffectEdgeProps = {
 export const CustomEffectEdge = forwardRef(({normalEdgeStrength = 1.0, depthEdgeStrength = 0.5}: CustomEffectEdgeProps, ref) => {
   const { scene, camera } = useThree();
   
-  const effect = useMemo(() => new CustomEffect(scene, camera, normalEdgeStrength, depthEdgeStrength), [scene, camera, normalEdgeStrength, depthEdgeStrength])
+  const effect = useMemo(() => {
+    return new CustomEffect(scene, camera, normalEdgeStrength, depthEdgeStrength)
+  }, [scene, camera, normalEdgeStrength, depthEdgeStrength]);
 
   return <primitive ref={ref} object={effect} />
 })
