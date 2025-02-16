@@ -16,6 +16,8 @@ import Bgm from "./interface/bgm";
 import PlayerVrm from "./playerVrm";
 import DropVRM from "./interface/dropVrm";
 
+import { EcctrlJoystick } from "ecctrl";
+
 const useVRM = (initialPath: string) => {
   const [vrm, setVrm] = useState<VRM | null>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -53,8 +55,8 @@ export default function Base() {
     perfVisible: false,
     cameraControls: false,
     selectStage: {
-      value: 'stageAction01',
-      options: ['stageAction01', 'stageDebug']
+      value: 'stageDebug',
+      options: ['stageDebug', 'stageAction01']
     }
   });
 
@@ -69,6 +71,19 @@ export default function Base() {
   ]
 
   const {vrm, progress, loadVRM} = useVRM('/models/AliciaSolid.vrm');
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768); // 768px以下をモバイルとして扱う
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   return (
     <KeyboardControls
@@ -104,8 +119,6 @@ export default function Base() {
         <Physics debug={false}>
           {/* <Player cameraControls={cameraControls} /> */}
           {vrm && <PlayerVrm cameraControls={cameraControls} onLoadVRM={vrm} />}
-          
-
           {selectStage === 'stageAction01' ? <StageAction01 /> : <DebugStage />}
         </Physics>
         {/* <Grid
@@ -113,8 +126,16 @@ export default function Base() {
           position={[0, 0, 0]}
         /> */}
       </Canvas>
-      <DropVRM progress={progress} loadVRM={loadVRM} />
-      <Interface />
+      {isMobile ? (
+        <EcctrlJoystick 
+          joystickRunSensitivity={1.0}
+        />
+        ) : (
+          <>
+            <Interface />
+            <DropVRM progress={progress} loadVRM={loadVRM} />
+          </>
+       )}
       <Bgm />
     </KeyboardControls>
   );
