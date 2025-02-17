@@ -39,7 +39,8 @@ function Scene() {
 
       <EffectComposer>
         <CustomEffectEdge normalEdgeStrength={normalEdgeStrength} depthEdgeStrength={depthEdgeStrength} />
-        <CustomEffectPixel pixelSize={pixelSize} />
+        {/* <CustomEffectPixel pixelSize={pixelSize} /> */}
+        <Pixelation granularity={pixelSize} />
         <Sepia intensity={sepia} />
       </EffectComposer>
     

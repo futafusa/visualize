@@ -12,7 +12,7 @@ const navigationItems = [
     path: '/visual/customPostProcessing',
     label: 'Custom Post Processing',
     thumbnail: '/images/thumbnails/customPostProcessing.png',
-    tags: ['WIP']
+    tags: ['Three.js','Post Processing']
   },
   {
     path: '/visual/renderTarget',

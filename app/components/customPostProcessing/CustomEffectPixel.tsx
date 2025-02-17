@@ -6,59 +6,38 @@ import * as THREE from 'three';
 const fragmentShader = /* glsl */ `
   uniform vec4 resolution;
   uniform float pixelSize;
+  uniform float maskStagger;
 
-  float random(vec2 st) {
-    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
-  }
-
-  vec3 sat(vec3 rgb, float adjustment) {
-    const vec3 W = vec3(0.2125, 0.7154, 0.0721);
-    vec3 intensity = vec3(dot(rgb, W));
-    return mix(intensity, rgb, adjustment);
-  }
+  const float MASK_BORDER = 0.9;
+  const float MASK_INTENSITY = 1.25;
 
   void mainImage(const in vec4 inputColor, const in vec2 uv, out vec4 outputColor) {
     vec2 normalizedPixelSize = pixelSize / resolution.xy;
-    float rowIndex = floor(uv.x / normalizedPixelSize.x);
-    vec2 uvPixel = normalizedPixelSize * floor(uv / normalizedPixelSize);
-
-    vec4 color = texture2D(inputBuffer, uvPixel);
-
-    float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
-    vec2 cellUV = fract(uv / normalizedPixelSize);
-    // color = vec4(1.0);
-
-    const float stripesMatrix[64] = float[64](
-      0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2,
-      0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0,
-      1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0,
-      1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2,
-      0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2,
-      0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0, 1.0,
-      1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 1.0,
-      1.0, 1.0, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2
-    );
-
-    const float crossStripeMatrix[64] = float[64](
-      1.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 1.0,
-      0.2, 1.0, 0.2, 0.2, 0.2, 0.2, 1.0, 0.2,
-      0.2, 0.2, 1.0, 0.2, 0.2, 1.0, 0.2, 0.2,
-      0.2, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 0.2,
-      0.2, 0.2, 0.2, 1.0, 1.0, 0.2, 0.2, 0.2,
-      0.2, 0.2, 1.0, 0.2, 0.2, 1.0, 0.2, 0.2,
-      0.2, 1.0, 0.2, 0.2, 0.2, 0.2, 1.0, 0.2,
-      1.0, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 1.0
-    );
-
-    int x = int(cellUV.x * 8.0);
-    int y = int(cellUV.y * 8.0);
-    int index = y * 8 + x;
+    vec2 coord = uv/normalizedPixelSize;
     
-    if(luma < 0.6) {
-        color *= (stripesMatrix[index] > luma) ? vec4(1.0) : vec4(0.0, 0.31, 0.933, 1.0);
-    } else {
-        color *= (crossStripeMatrix[index] > luma) ? vec4(1.0) : vec4(0.0, 0.31, 0.933, 1.0);
-    }
+    float columnStagger = mod(floor(coord.x), 2.0) * maskStagger;
+    vec2 subcoord = coord * vec2(3,1);
+    float subPixelIndex = mod(floor(subcoord.x), 3.0);
+    float subPixelStagger = subPixelIndex * maskStagger;
+
+    vec2 offsetUV = uv;
+    offsetUV.y += (columnStagger + subPixelStagger) * normalizedPixelSize.y;
+
+    vec2 uvPixel = normalizedPixelSize * floor(offsetUV / normalizedPixelSize);
+    vec4 color = texture2D(inputBuffer, uvPixel);
+    
+    // float luma = dot(vec3(0.2126, 0.7152, 0.0722), color.rgb);
+
+    // vec2 cellOffset = vec2(0.0, columnStagger + subPixelStagger);
+    // vec2 subCellUV = fract(subcoord + cellOffset) * 2.0 - 1.0;
+
+    // float mask = 1.0;
+    // vec2 border = 1.0 - subCellUV * subCellUV * (MASK_BORDER - luma * 0.25);
+    // mask *= border.x * border.y;
+    // float maskStrength = smoothstep(0.0, 0.95, mask);
+
+    // color += 0.005;
+    // color.rgb *=  1.0 + (maskStrength - 1.0) * MASK_INTENSITY;
 
     outputColor = color;
   }
@@ -69,7 +48,8 @@ class CustomEffect extends Effect {
     super('CustomEffectPixel', fragmentShader, {
       uniforms: new Map<string, THREE.Uniform<any>>([
         ['resolution', new THREE.Uniform(new THREE.Vector4(window.innerWidth, window.innerHeight, 1.0 / window.innerWidth, 1.0 / window.innerHeight))],
-        ['pixelSize', new THREE.Uniform(pixelSize)]
+        ['pixelSize', new THREE.Uniform(pixelSize)],
+        ['maskStagger', new THREE.Uniform(0.0)]
       ])
     })
   }
