@@ -4,7 +4,7 @@ import { Grid, CameraControls, KeyboardControls } from "@react-three/drei";
 import { useControls } from "leva";
 import { Perf } from "r3f-perf";
 import { Physics } from "@react-three/rapier";
-import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Vignette, Pixelation } from "@react-three/postprocessing";
 import { useEffect, useState, useCallback } from "react";
 import { VRM, VRMLoaderPlugin, VRMUtils } from "@pixiv/three-vrm";
 import { GLTFLoader } from "three/examples/jsm/Addons.js";
@@ -15,7 +15,7 @@ import StageAction01 from "./stageAction01";
 import Bgm from "./interface/bgm";
 import PlayerVrm from "./playerVrm";
 import DropVRM from "./interface/dropVrm";
-
+import { CustomEffectEdge } from "../customPostProcessing/CustomEffectEdge";
 import { EcctrlJoystick } from "ecctrl";
 
 const useVRM = (initialPath: string) => {
@@ -112,6 +112,8 @@ export default function Base() {
         <ambientLight intensity={2} />
 
         <EffectComposer>
+          {/* <CustomEffectEdge normalEdgeStrength={1.0} depthEdgeStrength={0.5} />
+          <Pixelation granularity={4} /> */}
           <Bloom intensity={0.5} mipmapBlur={true} radius={0.6}/>
           <Vignette offset={0.4} darkness={0.6}/>
         </EffectComposer>

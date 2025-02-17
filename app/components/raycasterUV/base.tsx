@@ -4,7 +4,7 @@ import { CameraControls, Grid } from "@react-three/drei";
 import { Perf } from "r3f-perf";
 import { useControls } from "leva";
 import { Physics } from "@react-three/rapier";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Pixelation } from "@react-three/postprocessing";
 import { KeyboardControls } from "@react-three/drei";
 
 import FloorBasic from "./floorBasic";
@@ -13,7 +13,7 @@ import GlowingFloor from "./glowingFloor";
 import BoxAnimation from "./boxAnimation";
 import Interface from "./interface";
 import RespawnObject from "./respawnObject";
-
+import { CustomEffectEdge } from "../customPostProcessing/CustomEffectEdge";
 const keyboardMap = [
   { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
   { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
@@ -56,6 +56,8 @@ export default function Base() {
         <ambientLight intensity={1} />
 
         <EffectComposer>
+          {/* <CustomEffectEdge normalEdgeStrength={1.0} depthEdgeStrength={0.5} />
+          <Pixelation granularity={8} /> */}
           <Bloom intensity={0.5} mipmapBlur={true} radius={0.6}/>
         </EffectComposer>
 
