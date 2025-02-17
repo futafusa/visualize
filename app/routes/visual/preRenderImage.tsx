@@ -1,31 +1,31 @@
 export default function PreRenderImage() {
   const imageList = [
     {
-      path: '/images/prerender/mardini_day11_b.png',
+      path: '/images/prerender/mardini_day11_b.webp',
       tags: ['Houdini', 'Vellum', 'Karma']
     },
     {
-      path: '/images/prerender/vellum_sample_010.png',
+      path: '/images/prerender/vellum_sample_010.webp',
       tags: ['Houdini', 'Vellum', 'Karma']
     },
     {
-      path: '/images/prerender/vellum_sample_011.png',
+      path: '/images/prerender/vellum_sample_011.webp',
       tags: ['Houdini', 'Vellum', 'Karma']
     },
     {
-      path: '/images/prerender/vellum_sample_012.png',
+      path: '/images/prerender/vellum_sample_012.webp',
       tags: ['Houdini', 'Karma']
     },
     {
-      path: '/images/prerender/vellum_sample_014.png',
+      path: '/images/prerender/vellum_sample_014.webp',
       tags: ['Houdini', 'Vellum', 'Karma']
     },
     {
-      path: '/images/prerender/view004d.png',
+      path: '/images/prerender/view004d.webp',
       tags: ['Houdini', 'Karma']
     },
     {
-      path: '/images/prerender/FgxZiIUaUAAel8t.jpg',
+      path: '/images/prerender/FgxZiIUaUAAel8t.webp',
       tags: ['Houdini', 'Karma']
     },
   ]
