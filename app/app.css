@@ -7,4 +7,10 @@ body {
   @apply bg-slate-200 w-full h-full text-slate-800;
 }
 
+@layer utilities {
+  .z-modal {
+    z-index: 20000000;
+  }
+}
+
 

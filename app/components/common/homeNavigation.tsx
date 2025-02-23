@@ -9,6 +9,12 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/oneRoad',
+    label: 'One Road',
+    thumbnail: '/images/thumbnails/customPostProcessing.png',
+    tags: ['WIP', 'Three.js', 'Game']
+  },
+  {
     path: '/visual/customPostProcessing',
     label: 'Custom Post Processing',
     thumbnail: '/images/thumbnails/customPostProcessing.png',
