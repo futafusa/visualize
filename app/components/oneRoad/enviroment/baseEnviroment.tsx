@@ -6,7 +6,7 @@ export default function BaseEnviroment() {
     <>
       <SimpleFloor />
       <PickupObject
-        position={[1, 1, 4]}
+        position={[-2, 1, 2]}
         rotation={[0, 0, 0]}
         size={[0.2, 0.2, 0.2]}
         coliderSize={8}
@@ -17,7 +17,7 @@ export default function BaseEnviroment() {
         }}
       />
       <PickupObject
-        position={[-1, 1, 8]}
+        position={[-7, 1, -2]}
         rotation={[0, 0, 0]}
         size={[0.2, 0.2, 0.2]}
         coliderSize={8}
@@ -25,6 +25,17 @@ export default function BaseEnviroment() {
         modalContent={{
           image: '/images/prerender/view004d.webp',
           text: '一週間に一度しか開かない。中身はおいしい。',
+        }}
+      />
+      <PickupObject
+        position={[4, 1, -2]}
+        rotation={[0, 0, 0]}
+        size={[0.2, 0.2, 0.2]}
+        coliderSize={8}
+        color="green"
+        modalContent={{
+          image: '/images/prerender/vellum_sample_012.webp',
+          text: '遠い海が見えたと思ったのに。',
         }}
       />
     </>

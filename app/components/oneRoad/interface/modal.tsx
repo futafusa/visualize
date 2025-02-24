@@ -40,7 +40,7 @@ export default function Modal() {
             bg-white text-black
             rounded-full
             w-16 h-16
-            hover:bg-black hover:text-white
+            lg:hover:bg-black lghover:text-white
             active:bg-black active:text-white
           "
           onClick={() => {
