@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useGlobalStore } from "../store/globalStore";
 
-export default function ButtonKey({ name, isActive }: { name: string, isActive: boolean }) {
+export default function ButtonKey({ name, isActive }: { name: string, isActive?: boolean }) {
   const { setIsInterfaceTouch } = useGlobalStore();
   
   const handlerTouchStart = (event: React.TouchEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>) => {
@@ -11,6 +11,8 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive: 
       forward: buttonName === 'forward',
       backward: buttonName === 'backward',
       pickup: buttonName === 'pickup',
+      leftward: buttonName === 'leftward',
+      rightward: buttonName === 'rightward',
     });
   }
 
@@ -21,6 +23,8 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive: 
       forward: buttonName === 'forward' && false,
       backward: buttonName === 'backward' && false,
       pickup: buttonName === 'pickup' && false,
+      leftward: buttonName === 'leftward' && false,
+      rightward: buttonName === 'rightward' && false,
     });
   }
     
@@ -29,10 +33,11 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive: 
       data-name={name}
       className={`
         flex justify-center items-center
-        w-20 h-10 
+        w-16 h-16 
         border-2 border-white rounded-lg
         text-white text-center
-        hover:bg-white/40 active:bg-white/90
+        active:bg-white/90
+        lg:hover:bg-white/40
       `}
       onMouseDown={handlerTouchStart}
       onMouseUp={handlerTouchEnd}
@@ -40,9 +45,11 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive: 
       onTouchStart={handlerTouchStart}
       onTouchEnd={handlerTouchEnd}
     >
-      {name === 'forward' && <div className="i-ic-baseline-arrow-upward"></div>}
-      {name === 'backward' && <div className="i-ic-baseline-arrow-downward"></div>}
-      {name === 'pickup' && <div>調べる</div>}
+      {name === 'forward' && <div className="i-ic-baseline-arrow-upward text-2xl"></div>}
+      {name === 'backward' && <div className="i-ic-baseline-arrow-downward text-2xl"></div>}
+      {name === 'leftward' && <div className="i-ic-baseline-arrow-back text-2xl"></div>}
+      {name === 'rightward' && <div className="i-ic-baseline-arrow-forward text-2xl"></div>}
+      {name === 'pickup' && <div className="i-ic-outline-circle text-2xl">調べる</div>}
     </button>
   )
 }

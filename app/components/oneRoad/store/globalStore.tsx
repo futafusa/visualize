@@ -5,6 +5,8 @@ interface GlobalStore {
     forward: boolean;
     backward: boolean;
     pickup: boolean;
+    leftward: boolean;
+    rightward: boolean;
   };
   setIsInterfaceTouch: (isInterfaceTouch: GlobalStore['isInterfaceTouch']) => void;
   isModalOpen: boolean;
@@ -21,6 +23,8 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
     forward: false,
     backward: false,
     pickup: false,
+    leftward: false,
+    rightward: false,
   },
   setIsInterfaceTouch: (isInterfaceTouch) => set({ isInterfaceTouch }),
   isModalOpen: false,

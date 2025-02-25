@@ -189,8 +189,8 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
     }
 
     // player control
-    const {forward, backward} = getKeys();
-    const isPlayerMove = forward || backward || isInterfaceTouch.forward || isInterfaceTouch.backward;
+    const {forward, backward, leftward, rightward} = getKeys();
+    const isPlayerMove = forward || backward || leftward || rightward || isInterfaceTouch.forward || isInterfaceTouch.backward || isInterfaceTouch.leftward || isInterfaceTouch.rightward;
     // アニメーションの切り替え
     if(isPlayerMove) {
       setSelectAnimation('run');
@@ -209,6 +209,14 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
     if (backward || isInterfaceTouch.backward) {
       impulse.z -= impluseStrength;
       setTargetRotation(0); // 後ろ向き
+    }
+    if (leftward || isInterfaceTouch.leftward) {
+      impulse.x += impluseStrength;
+      setTargetRotation(-Math.PI / 2); // 左向き
+    }
+    if (rightward || isInterfaceTouch.rightward) {
+      impulse.x -= impluseStrength;
+      setTargetRotation(Math.PI / 2); // 右向き
     }
 
     // 現在の回転から目標の回転まで滑らかに補間
@@ -236,9 +244,9 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
       if(playerPosition) {
         const cameraPosition = new THREE.Vector3();
         cameraPosition.copy(playerPosition);
-        cameraPosition.y += 15;
-        cameraPosition.x -= 15;
-        cameraPosition.z -= 15;
+        cameraPosition.y += 8;
+        // cameraPosition.x -= 15;
+        cameraPosition.z -= 20;
 
         const cameraTarget = new THREE.Vector3();
         cameraTarget.copy(playerPosition);
@@ -273,7 +281,7 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
         lockRotations={true}
         enabledRotations={[false, false, false]}
         mass={3}
-        linearDamping={2.5}
+        linearDamping={4}
       >
         <primitive
           ref={refModel}
