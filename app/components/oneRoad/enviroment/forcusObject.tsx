@@ -3,23 +3,21 @@ import { useState, useEffect } from "react";
 import { Html } from "@react-three/drei";
 import { useGlobalStore } from "../store/globalStore";
 
-export default function PickupObject(
+export default function ForcusObject(
   props: {
     position: [number, number, number],
     rotation: [number, number, number]
     size: [number, number, number],
     coliderSize: number,
     color: string,
-    modalContent: {
-      image: string,
-      text: string,
-    },
     children?: React.ReactNode,
   }
 ) {
   const [isPlayerEnter, setIsPlayerEnter] = useState<boolean>(false);
+
+  // global state
   const pickupGlobal = useGlobalStore((state) => state.isInterfaceTouch.pickup);
-  const { setIsModalOpen, modalContent, setModalContent } = useGlobalStore();
+  const { cameraForcus, setCameraForcus, setCameraForcusPosition } = useGlobalStore((state) => state);
 
   const handleIntersectionEnter = (event: any) => {
     const colliderOther = event.other.rigidBodyObject;
@@ -34,31 +32,29 @@ export default function PickupObject(
 
     if(colliderOther?.name === 'player') {
       setIsPlayerEnter(false);
+      setCameraForcus(false);
     }
   }
 
   useEffect(() => {
     if (pickupGlobal && isPlayerEnter) {
-      setModalContent({
-        image: props.modalContent.image,
-        text: props.modalContent.text,
-      });
+      setCameraForcusPosition(props.position);
 
-      setIsModalOpen(true);
+      setCameraForcus(true);
     }
   }, [pickupGlobal, isPlayerEnter]);
 
   return (
     <group position={props.position} rotation={props.rotation}>
       <RigidBody
-        name="pickupObject"
+        name="forcusObject"
         type="fixed"
         scale={props.size}
         colliders={false}
       >
         <mesh>
-          <boxGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color={props.color} />
+          <icosahedronGeometry args={[0.5, 1]} />
+          <meshStandardMaterial color={props.color} flatShading />
           <BallCollider args={[props.coliderSize]} sensor={true}
             onIntersectionEnter={handleIntersectionEnter}
             onIntersectionExit={handleIntersectionExit}
@@ -68,7 +64,7 @@ export default function PickupObject(
       {isPlayerEnter ? (
         <Html center position={[0, 0, 0]} zIndexRange={[16777300, 16777271]}>
           <div className="
-            bg-white text-black text-center text-sm min-w-[80px] rounded-md px-2 py-2 flex justify-center items-center
+            bg-white text-black text-center text-sm min-w-[120px] rounded-md px-2 py-2 flex justify-center items-center
             -translate-y-20
             before:content-['']
             before:absolute
@@ -79,7 +75,7 @@ export default function PickupObject(
             before:border-transparent
             before:border-t-white
           ">
-            <div className="px-2">調べる</div>
+            <div className="px-2">カメラフォーカス</div>
           </div>
         </Html>
       ) : null}

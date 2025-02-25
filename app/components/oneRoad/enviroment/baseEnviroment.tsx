@@ -1,5 +1,6 @@
 import SimpleFloor from "./simpleFloor";
 import PickupObject from "./pickupObject";
+import ForcusObject from "./forcusObject";
 
 export default function BaseEnviroment() {
   return (
@@ -17,7 +18,7 @@ export default function BaseEnviroment() {
         }}
       />
       <PickupObject
-        position={[-7, 1, -2]}
+        position={[-8, 1, 0]}
         rotation={[0, 0, 0]}
         size={[0.2, 0.2, 0.2]}
         coliderSize={8}
@@ -37,6 +38,20 @@ export default function BaseEnviroment() {
           image: '/images/prerender/vellum_sample_012.webp',
           text: '遠い海が見えたと思ったのに。',
         }}
+      />
+      <ForcusObject
+        position={[8, 1, 2]}
+        rotation={[0, 0, 0]}
+        size={[0.2, 0.2, 0.2]}
+        coliderSize={8}
+        color="yellow"
+      />
+      <ForcusObject
+        position={[-4, 1, -2]}
+        rotation={[0, 0, 0]}
+        size={[0.2, 0.2, 0.2]}
+        coliderSize={8}
+        color="purple"
       />
     </>
   );

@@ -19,19 +19,19 @@ export default function BaseInterface() {
     <>
       <div
         className="
-          absolute bottom-0 left-0 w-full h-[200px]
+          absolute bottom-0 left-0 w-full h-[240px]
         flex justify-center items-center gap-12
       ">
-        <div className="flex gap-4 justify-center items-center">
-          <div>
-            <ButtonKey name="leftward" />
-          </div>
-          <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <div className="flex gap-4">
             <ButtonKey name="forward" />
-            <ButtonKey name="backward" />
+          </div>
+          <div className="flex flex-row gap-4">
+            <ButtonKey name="leftward" />
+            <ButtonKey name="rightward" />
           </div>
           <div>
-            <ButtonKey name="rightward" />
+            <ButtonKey name="backward" />
           </div>
         </div>
         <ButtonKey name="pickup" />
