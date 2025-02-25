@@ -38,6 +38,9 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive?:
         text-white text-center
         active:bg-white/90
         lg:hover:bg-white/40
+        ${name === 'leftward' || name === 'rightward' ? 'w-24 h-14' : ''}
+        ${name === 'forward' || name === 'backward' ? 'w-20 h-12' : ''}
+        ${name === 'pickup' ? 'w-16 h-16' : ''}
       `}
       onMouseDown={handlerTouchStart}
       onMouseUp={handlerTouchEnd}
@@ -45,8 +48,8 @@ export default function ButtonKey({ name, isActive }: { name: string, isActive?:
       onTouchStart={handlerTouchStart}
       onTouchEnd={handlerTouchEnd}
     >
-      {name === 'forward' && <div className="i-ic-baseline-arrow-upward text-2xl"></div>}
-      {name === 'backward' && <div className="i-ic-baseline-arrow-downward text-2xl"></div>}
+      {name === 'forward' && <div className="i-ic-baseline-arrow-upward text-xl"></div>}
+      {name === 'backward' && <div className="i-ic-baseline-arrow-downward text-xl"></div>}
       {name === 'leftward' && <div className="i-ic-baseline-arrow-back text-2xl"></div>}
       {name === 'rightward' && <div className="i-ic-baseline-arrow-forward text-2xl"></div>}
       {name === 'pickup' && <div className="i-ic-outline-circle text-2xl">調べる</div>}

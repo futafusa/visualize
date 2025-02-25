@@ -9,7 +9,7 @@ export default function Modal() {
     <motion.div
       data-name="modal"
       className="
-        absolute top-0 left-0 w-full h-full bg-black/50 z-modal
+        absolute top-0 left-0 w-full h-full bg-black/80 z-modal
         flex justify-center items-center
         transition-opacity duration-300
         opacity-1

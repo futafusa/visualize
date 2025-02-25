@@ -6,7 +6,6 @@ import { loadMixamoAnimation } from '~/components/common/loadMixamoAnimation';
 import { RigidBody, type RapierRigidBody, CapsuleCollider, useRapier, CollisionEnterPayload } from "@react-three/rapier";
 import { useKeyboardControls, useTexture } from "@react-three/drei";
 import { useGlobalStore } from "../store/globalStore";
-import { useControls } from "leva";
 
 export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControls: boolean, onLoadVRM: VRM }) {
   const [AnimationMixer, setAnimationMixer] = useState<THREE.AnimationMixer | null>(null);
@@ -33,7 +32,7 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
   const [selectAnimation, setSelectAnimation] = useState<string>('idle');
 
   // global state
-  const { isInterfaceTouch } = useGlobalStore();
+  const { isInterfaceTouch, cameraForcus, setCameraForcus, cameraForcusPosition } = useGlobalStore();
 
   // アニメーションの読み込み
   useEffect(() => {
@@ -200,7 +199,7 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
 
     const impulse = { x: 0, y: 0, z: 0 };
     const impluseStrength = 6.3 * delta;
-
+    
     // 目標の回転角度を設定
     if (forward || isInterfaceTouch.forward) {
       impulse.z += impluseStrength;
@@ -240,8 +239,8 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
 
     // move camera
     if(!cameraControls) {
-      const playerPosition = refPlayer.current?.translation();
-      if(playerPosition) {
+      if(cameraForcus === false) {
+        const playerPosition = refPlayer.current?.translation()!;
         const cameraPosition = new THREE.Vector3();
         cameraPosition.copy(playerPosition);
         cameraPosition.y += 8;
@@ -250,6 +249,21 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
 
         const cameraTarget = new THREE.Vector3();
         cameraTarget.copy(playerPosition);
+
+        smoothCameraPosition.lerp(cameraPosition, 5 * delta);
+        smoothCameraTarget.lerp(cameraTarget, 5 * delta);
+
+        state.camera.position.copy(smoothCameraPosition);
+        state.camera.lookAt(smoothCameraTarget);
+      } else {
+        const cameraPosition = new THREE.Vector3();
+        cameraPosition.copy( new THREE.Vector3(...cameraForcusPosition));
+        cameraPosition.y += 2;
+        // cameraPosition.x -= 4;
+        cameraPosition.z -= 5;
+
+        const cameraTarget = new THREE.Vector3();
+        cameraTarget.copy(new THREE.Vector3(...cameraForcusPosition));
 
         smoothCameraPosition.lerp(cameraPosition, 5 * delta);
         smoothCameraTarget.lerp(cameraTarget, 5 * delta);
@@ -278,8 +292,8 @@ export default function PlayerVrm({ cameraControls, onLoadVRM }: { cameraControl
         restitution={0.1}
         friction={1.0}
         position={[0, 2, 0]}
-        lockRotations={true}
-        enabledRotations={[false, false, false]}
+        // lockRotations={true}
+        enabledRotations={[false, true, false]}
         mass={3}
         linearDamping={4}
       >
