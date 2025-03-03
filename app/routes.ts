@@ -30,6 +30,7 @@ export default [
     route("raycasterUV", "./routes/visual/raycasterUV.tsx"),
     route("customPostProcessing", "./routes/visual/customPostProcessing.tsx"),
     route("renderTarget", "./routes/visual/renderTarget.tsx"),
-    route("oneRoad", "./routes/visual/oneRoad.tsx"),
+    route("beltScroll", "./routes/visual/beltScroll.tsx"),
+    route("customSlide", "./routes/visual/customSlide.tsx"),
   ]),
 ] satisfies RouteConfig;
