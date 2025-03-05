@@ -9,6 +9,12 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/simpleCustomSlider',
+    label: 'Simple Custom Slider',
+    thumbnail: '/images/thumbnails/simpleCustomSlider.png',
+    tags: ['WIP']
+  },
+  {
     path: '/visual/customSlide',
     label: 'Custom Slide',
     thumbnail: '/images/thumbnails/customSlide.png',

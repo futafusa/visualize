@@ -32,5 +32,6 @@ export default [
     route("renderTarget", "./routes/visual/renderTarget.tsx"),
     route("beltScroll", "./routes/visual/beltScroll.tsx"),
     route("customSlide", "./routes/visual/customSlide.tsx"),
+    route("simpleCustomSlider", "./routes/visual/simpleCustomSlider.tsx"),
   ]),
 ] satisfies RouteConfig;
