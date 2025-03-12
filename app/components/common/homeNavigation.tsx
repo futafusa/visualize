@@ -9,10 +9,22 @@ interface RouteConfig {
 
 const navigationItems = [
   {
-    path: '/visual/oneRoad',
-    label: 'One Road',
-    thumbnail: '/images/thumbnails/customPostProcessing.png',
-    tags: ['WIP', 'Three.js', 'Game']
+    path: '/visual/simpleCustomSlider',
+    label: 'Simple Custom Slider',
+    thumbnail: '/images/thumbnails/simpleCustomSlider.png',
+    tags: ['WIP']
+  },
+  // {
+  //   path: '/visual/customSlide',
+  //   label: 'Custom Slide',
+  //   thumbnail: '/images/thumbnails/customSlide.png',
+  //   tags: ['WIP', 'Three.js', 'Game']
+  // },
+  {
+    path: '/visual/beltScroll',
+    label: 'Belt Scroll',
+    thumbnail: '/images/thumbnails/beltScroll.png',
+    tags: ['Three.js', 'Game']
   },
   {
     path: '/visual/customPostProcessing',
@@ -41,7 +53,7 @@ const navigationItems = [
   },
   {
     path: '/visual/sampleVrm',
-    label: 'Sample Load VRM',
+    label: 'Preview VRM',
     thumbnail: '/images/thumbnails/sampleVrm.png',
     tags: ['Three.js', 'VRM']
   },
