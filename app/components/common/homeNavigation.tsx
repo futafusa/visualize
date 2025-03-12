@@ -14,12 +14,12 @@ const navigationItems = [
     thumbnail: '/images/thumbnails/simpleCustomSlider.png',
     tags: ['WIP']
   },
-  {
-    path: '/visual/customSlide',
-    label: 'Custom Slide',
-    thumbnail: '/images/thumbnails/customSlide.png',
-    tags: ['WIP', 'Three.js', 'Game']
-  },
+  // {
+  //   path: '/visual/customSlide',
+  //   label: 'Custom Slide',
+  //   thumbnail: '/images/thumbnails/customSlide.png',
+  //   tags: ['WIP', 'Three.js', 'Game']
+  // },
   {
     path: '/visual/beltScroll',
     label: 'Belt Scroll',
@@ -53,7 +53,7 @@ const navigationItems = [
   },
   {
     path: '/visual/sampleVrm',
-    label: 'Sample Load VRM',
+    label: 'Preview VRM',
     thumbnail: '/images/thumbnails/sampleVrm.png',
     tags: ['Three.js', 'VRM']
   },

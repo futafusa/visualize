@@ -5,7 +5,7 @@ import { CameraControls, Grid, Html } from "@react-three/drei";
 import { VRMLoaderPlugin, VRM, VRMUtils } from '@pixiv/three-vrm';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { loadMixamoAnimation } from '../../components/common/loadMixamoAnimation';
-import { useControls } from "leva";
+import { useControls, button } from "leva";
 import { Perf } from "r3f-perf";
 
 function DisplayVrm({ onLoadVRM }: { onLoadVRM: VRM }) {
@@ -144,8 +144,41 @@ export default function SampleVrm() {
   const { perfVisible } = useControls('Performance', {
     perfVisible: false
   });
-  const refCameraControls = useRef<CameraControls | null>(null);
 
+  const refCameraControls = useRef<CameraControls>(null)!;
+  const cameraPositions = {
+    "default": [
+      2, 2, -2,
+      0, 1, 0
+    ],
+    "face": [
+      0.37973153478934085, 1.384184149429858, -0.5100098040906823,
+      -0.03344901044390385, 1.3395703401713253, 0.03573992249643781
+    ],
+    "under": [
+      -1.0328286020019157, 0.30231885242679624, -1.743724344177738,
+      0.06229085438140309, 0.7308072386944194, 0.03359618924203886
+    ],
+    "back": [
+      0, 2.4, 3,
+      0, 1, 0
+    ]
+  }
+
+  const { cameraPosition } = useControls("Camera", {
+    "getLookAt (to console)": button(() => {
+      const position = refCameraControls.current?.getPosition(new THREE.Vector3());
+      const target = refCameraControls.current?.getTarget(new THREE.Vector3());
+      if (position && target) {
+        console.log([...position.toArray(), ...target.toArray()]);
+      }
+    }),
+    cameraPosition: {
+      options: Object.keys(cameraPositions),
+      value: 'default'
+    }
+  });
+  
   // load vrm
   const [vrm, setVrm] = useState<VRM | null>(null);
   const [progress, setProgress] = useState<number>(0);
@@ -173,6 +206,19 @@ export default function SampleVrm() {
     loadVRM('/models/AliciaSolid.vrm');
   }, []);
 
+  useEffect(() => {
+    refCameraControls.current?.setTarget(0, 1, 0, false);
+  }, [vrm]);
+
+  useEffect(() => {
+    const pos = cameraPositions[cameraPosition as keyof typeof cameraPositions];
+    refCameraControls.current?.setLookAt(
+      pos[0], pos[1], pos[2],
+      pos[3], pos[4], pos[5],
+      true
+    );
+  }, [cameraPosition]);
+
   return (
     <>
       <Canvas
@@ -195,10 +241,6 @@ export default function SampleVrm() {
         <CameraControls
           makeDefault
           ref={refCameraControls}
-          onUpdate={(self) => {
-            // console.log(self);
-            self.setTarget(0, 1, 0, false);
-          }}
         />
         <ambientLight intensity={1.0} />
 
