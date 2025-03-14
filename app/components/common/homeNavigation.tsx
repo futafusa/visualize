@@ -9,10 +9,16 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/destroyObject',
+    label: 'Destroy Object',
+    thumbnail: '/images/thumbnails/destroyObject.png',
+    tags: ['Three.js', 'Destroy Object']
+  },
+  {
     path: '/visual/simpleCustomSlider',
     label: 'Simple Custom Slider',
     thumbnail: '/images/thumbnails/simpleCustomSlider.png',
-    tags: ['WIP']
+    tags: ['Three.js', 'GLSL']
   },
   // {
   //   path: '/visual/customSlide',
