@@ -23,7 +23,7 @@ export default function Model({shape, position, speed, onDestroy}: ModelProps) {
   });
 
   return (
-    <mesh ref={refModel} position={position}>
+    <mesh ref={refModel} position={position} scale={0.7}>
       {shape === "cube"
         ? (
           <>

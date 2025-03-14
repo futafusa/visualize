@@ -12,7 +12,7 @@ const navigationItems = [
     path: '/visual/destroyObject',
     label: 'Destroy Object',
     thumbnail: '/images/thumbnails/destroyObject.png',
-    tags: ['WIP']
+    tags: ['Three.js', 'Destroy Object']
   },
   {
     path: '/visual/simpleCustomSlider',

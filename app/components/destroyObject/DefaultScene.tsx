@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
-import { useVRM } from "./useVRM";
 
 import Model from "./Model";
-import ModelRoad from "./ModelRoad";
 
 type ModelData = {
   id: number;
@@ -15,25 +13,25 @@ type ModelData = {
 export default function MainScene() {
   const [modelId, setModelId] = useState(0);
   const [models, setModels] = useState<ModelData[]>([]);
-
-  useEffect(() => {
-    setModelId(modelId + 1);
-    console.log(models);
-  }, [models]);
   
   useFrame(() => {
-    if(Math.random() > 0.03) return;
+    if(Math.random() > 0.02) return;
 
     setModels((prev) => [
       ...prev,
       {
         id: modelId,
         shape: Math.random() < 0.4 ? "cube" : Math.random() < 0.8 ? "sphere" : "cylinder",
-        position: [Math.random() > 0.5 ? Math.random() * 8 + 1 : Math.random() * -8 - 1, 0.5, -20],
-        speed: 0.05
+        position: [Math.random() * 10 - 5, 1, -5],
+        speed: Math.random() * 0.1 + 0.005
       }
     ]);
   });
+
+  useEffect(() => {
+    setModelId(modelId + 1);
+    console.log(models);
+  }, [models]);
 
   function handleDestroy(id: number) {
     setModels((prev) => prev.filter((m) => m.id !== id));
@@ -41,14 +39,6 @@ export default function MainScene() {
 
   return (
     <>
-      {Array.from({ length: 4 }, (_, i) => (
-        <ModelRoad
-          key={i}
-          position={[0, 0.01, -i * 10]}
-          speed={0.05}
-          onDestroy={() => handleDestroy(i)}
-        />
-      ))}
       {models.map((model) => (
         <Model
           key={model.id}
