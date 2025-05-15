@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useState, useEffect, useRef } from "react";
 import { useThree, extend, ReactThreeFiber, useFrame } from "@react-three/fiber";
-import { useTexture, shaderMaterial } from "@react-three/drei";
+import { useTexture, shaderMaterial, CameraControls, useKeyboardControls } from "@react-three/drei";
 import { useSliderStore } from "./sliderStore";
 import { useControls } from "leva";
 
@@ -26,6 +26,9 @@ export default function SliderImage(
   const hasTriggeredNext = useRef(false);
   const timeline = useRef(0);
 
+  const refCamera = useRef<CameraControls>(null);
+  const [subscribeKeys, getKeys] = useKeyboardControls();
+
   // const controls = useControls('Transition', {
   //   speed: {
   //     value: 0.017,
@@ -38,6 +41,12 @@ export default function SliderImage(
 
   // texture.flipY = prevTexture.flipY = false;
   // texture.wrapS = texture.wrapT = prevTexture.wrapS = prevTexture.wrapT = THREE.RepeatWrapping;
+
+  function setCameraPosition() {
+    if(refCamera.current) {
+      refCamera.current.setLookAt(0, 0, 11.5, 0, 0, 0, false);
+    }
+  }
 
   useEffect(() => {
     // 新しい画像を格納
@@ -81,24 +90,32 @@ export default function SliderImage(
         nextSlide();
       }
     }
+
+    const { resetCamera } = getKeys();
+    if(resetCamera) {
+      setCameraPosition();
+    }
   });
 
   return (
-    <mesh>
-      <planeGeometry args={[1920*0.01, 1080*0.01, 200, 124]} />
-      {/* <boxGeometry args={[width * ratio, height * ratio, width * ratio]} /> */}
-      {/* <cylinderGeometry args={[1, 1, 3]} /> */}
-      <sliderImageMaterial
-        ref={refMaterial}
-        uTexture={texture}
-        uPrevTexture={prevTexture}
-        uProgress={0.5}
-        uScanProgress={0.0}
-        uTime={0.0}
-        // wireframe={true}
-        // side={THREE.DoubleSide}
-      />
-    </mesh>
+    <>
+      <CameraControls ref={refCamera} />
+      <mesh>
+        <planeGeometry args={[1920*0.01, 1080*0.01, 200, 124]} />
+        {/* <boxGeometry args={[width * ratio, height * ratio, width * ratio]} /> */}
+        {/* <cylinderGeometry args={[1, 1, 3]} /> */}
+        <sliderImageMaterial
+          ref={refMaterial}
+          uTexture={texture}
+          uPrevTexture={prevTexture}
+          uProgress={0.5}
+          uScanProgress={0.0}
+          uTime={0.0}
+          // wireframe={true}
+          // side={THREE.DoubleSide}
+        />
+      </mesh>
+    </>
   );
 }
 
