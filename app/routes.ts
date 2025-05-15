@@ -8,6 +8,7 @@ import {
 export default [
   index("./routes/home.tsx"),
   // route("about", "./routes/about.tsx"),
+  route("scanImage", "./routes/visual/scanImage.tsx"),
 
   // /visual/ 以下のルーティング
   route("visual", "./routes/visual/index.tsx", [
