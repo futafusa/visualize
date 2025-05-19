@@ -9,6 +9,12 @@ interface RouteConfig {
 
 const navigationItems = [
   {
+    path: '/visual/scanImage',
+    label: 'Scan Image',
+    thumbnail: '/images/thumbnails/scanimage.png',
+    tags: ['Three.js', 'Shader']
+  },
+  {
     path: '/visual/destroyObject',
     label: 'Destroy Object',
     thumbnail: '/images/thumbnails/destroyObject.png',
@@ -18,7 +24,7 @@ const navigationItems = [
     path: '/visual/simpleCustomSlider',
     label: 'Simple Custom Slider',
     thumbnail: '/images/thumbnails/simpleCustomSlider.png',
-    tags: ['Three.js', 'GLSL']
+    tags: ['Three.js', 'Shader']
   },
   // {
   //   path: '/visual/customSlide',
@@ -67,7 +73,7 @@ const navigationItems = [
     path: '/visual/effectTest',
     label: 'Effect Test',
     thumbnail: '/images/thumbnails/effectTest.png',
-    tags: ['Three.js', 'GLSL']
+    tags: ['Three.js', 'Shader']
   },
   {
     path: '/visual/manyCircle',
@@ -79,13 +85,13 @@ const navigationItems = [
     path: '/visual/studyGlsl',
     label: 'study GLSL',
     thumbnail: '/images/thumbnails/studyGlsl.png',
-    tags: ['Three.js', 'GLSL']
+    tags: ['Three.js', 'Shader']
   },
   {
     path: '/visual/imageSlide',
     label: 'Custom Slide Image',
     thumbnail: '/images/thumbnails/imageSlide.png',
-    tags: ['Three.js', 'GLSL']
+    tags: ['Three.js', 'Shader']
 
   },
   {
@@ -98,7 +104,7 @@ const navigationItems = [
     path: '/visual/sampleCustomShader',
     label: 'Sample CustomShader',
     thumbnail: '/images/thumbnails/sampleCustomShader.png',
-    tags: ['Three.js', 'GLSL']
+    tags: ['Three.js', 'Shader']
   },
   {
     path: '/visual/sampleBufferGeometry',

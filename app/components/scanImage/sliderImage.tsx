@@ -29,15 +29,15 @@ export default function SliderImage(
   const refCamera = useRef<CameraControls>(null);
   const [subscribeKeys, getKeys] = useKeyboardControls();
 
-  // const controls = useControls('Transition', {
-  //   speed: {
-  //     value: 0.017,
-  //     min: 0.001,
-  //     max: 0.1,
-  //     step: 0.001,
-  //     label: 'scan speed'
-  //   }
-  // });
+  const { speed } = useControls('Scan', {
+    speed: {
+      value: 0.017,
+      min: 0.001,
+      max: 0.1,
+      step: 0.001,
+      label: 'Scan Speed'
+    }
+  });
 
   // texture.flipY = prevTexture.flipY = false;
   // texture.wrapS = texture.wrapT = prevTexture.wrapS = prevTexture.wrapT = THREE.RepeatWrapping;
@@ -70,8 +70,8 @@ export default function SliderImage(
   });
 
   useFrame((state, delta) => {
-    // timeline.current += delta * 0.5;
-    timeline.current += delta * 0.017; 
+    timeline.current += delta * speed;
+    // timeline.current += delta * 0.017;
     if(refMaterial.current) {
       refMaterial.current.uProgress = THREE.MathUtils.lerp(
         refMaterial.current.uProgress, 1, 0.05
@@ -140,16 +140,15 @@ const vertexShader = `
 
   void main() {
     // vec4 modelPosition = modelMatrix * vec4(position, 1.0);
-    
+
     // modelPosition.x += noise(modelPosition.xz * 0.5 + uTime) * 0.1;
     // modelPosition.y += noise(modelPosition.xz * 0.5 + uTime) * 0.2;
 
     // vec4 viewPosition = viewMatrix * modelPosition;
     // vec4 projectionPosition = projectionMatrix * viewPosition;
     vec4 projectionPosition = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
-    
+
     gl_Position = projectionPosition;
-    
     vUv = uv;
   }
 `;
@@ -164,7 +163,7 @@ const fragmentShader = `
 
   void main() {
     vec2 uv = vUv;
-    
+
     vec4 prevTexture = texture2D(uPrevTexture, vec2(1.0, uv.y));
 
     float edge = step(uv.x, uScanProgress);

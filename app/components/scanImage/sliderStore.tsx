@@ -15,94 +15,13 @@ export const useSliderStore = create<SliderStore>((set) => ({
   direction: "start",
   sliderItems: [
     {
-      imagePath: "/images/scanimage/1.png",
+      imagePath: "/images/scanimage/1.webp",
     },
     {
-      imagePath: "/images/scanimage/2.png",
+      imagePath: "/images/scanimage/2.webp",
     },
     {
-      imagePath: "/images/scanimage/3.png",
-    },
-    {
-      imagePath: "/images/scanimage/4.png",
-    },
-    {
-      imagePath: "/images/scanimage/5.png",
-    },
-    {
-      imagePath: "/images/scanimage/6.png",
-    },
-    {
-      imagePath: "/images/scanimage/7.png",
-    },
-    {
-      imagePath: "/images/scanimage/8.png",
-    },
-    {
-      imagePath: "/images/scanimage/9.png",
-    },
-    {
-      imagePath: "/images/scanimage/10.png",
-    },
-    {
-      imagePath: "/images/scanimage/11.png",
-    },
-    {
-      imagePath: "/images/scanimage/12.png",
-    },
-    {
-      imagePath: "/images/scanimage/13.png",
-    },
-    {
-      imagePath: "/images/scanimage/14.png",
-    },
-    {
-      imagePath: "/images/scanimage/15.png",
-    },
-    {
-      imagePath: "/images/scanimage/16.png",
-    },
-    {
-      imagePath: "/images/scanimage/17.png",
-    },
-    {
-      imagePath: "/images/scanimage/18.png",
-    },
-    {
-      imagePath: "/images/scanimage/19.png",
-    },
-    {
-      imagePath: "/images/scanimage/20.png",
-    },
-    {
-      imagePath: "/images/scanimage/21.png",
-    },
-    {
-      imagePath: "/images/scanimage/22.png",
-    },
-    {
-      imagePath: "/images/scanimage/23.png",
-    },
-    {
-      imagePath: "/images/scanimage/24.png",
-    },
-    {
-      imagePath: "/images/scanimage/25.png",
-    },
-    {
-      imagePath: "/images/scanimage/26.png",
-    },
-    {
-      imagePath: "/images/scanimage/27.png",
-    },
-    {
-      imagePath: "/images/scanimage/28.png",
-    },
-    {
-      imagePath: "/images/scanimage/29.png",
-    },
-    {
-      imagePath: "/images/scanimage/30.png",
+      imagePath: "/images/scanimage/3.webp",
     },
   ],
   nextSlide: () => {
