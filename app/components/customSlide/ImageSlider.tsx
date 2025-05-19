@@ -171,7 +171,11 @@ export default function ImageSlider(
     if(!refMaterial.current) return;
     const material = refMaterial.current;
 
-    material.uniforms.uProgression.value = THREE.MathUtils.lerp(material.uniforms.uProgression.value, 1.0, 0.1);
+    material.uniforms.uProgression.value = THREE.MathUtils.lerp(
+      material.uniforms.uProgression.value,
+      1.0,
+      0.1
+    );
     
     material.uniforms.uMousePosition.value = [
       THREE.MathUtils.lerp(

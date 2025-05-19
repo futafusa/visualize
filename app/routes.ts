@@ -8,7 +8,6 @@ import {
 export default [
   index("./routes/home.tsx"),
   // route("about", "./routes/about.tsx"),
-
   // /visual/ 以下のルーティング
   route("visual", "./routes/visual/index.tsx", [
     route("sampleAudio", "./routes/visual/sampleAudio.tsx"),
@@ -34,5 +33,6 @@ export default [
     route("customSlide", "./routes/visual/customSlide.tsx"),
     route("simpleCustomSlider", "./routes/visual/simpleCustomSlider.tsx"),
     route("destroyObject", "./routes/visual/destroyObject.tsx"),
+    route("scanImage", "./routes/visual/scanImage.tsx"),
   ]),
 ] satisfies RouteConfig;
